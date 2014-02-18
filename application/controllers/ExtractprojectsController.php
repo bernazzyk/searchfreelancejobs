@@ -284,14 +284,12 @@ class ExtractprojectsController extends Zend_Controller_Action
                 $project['posted'] = date('Y-m-d H:i:s', strtotime(trim($xpath->query('td[@class="date"]', $item)->item(0)->nodeValue)));
                 $project['title'] = $linkElement->nodeValue;
                 $project['external_id'] = mb_substr($project['external_url'], mb_strrpos($project['external_url'], '/') + 1);
-                
                 $price = trim($xpath->query('td[@class="budget"]', $item)->item(0)->nodeValue);
                 if (preg_match('#^([\d\.]+)[^\d]*?–[^\d]*?([\d\.]+).*?\$/(project|month|hour)$#umis', $price, $matches)) {
                     $project['budget_low'] = (float)$matches[1];
                     $project['budget_high'] = (float)$matches[2];
                     $project['jobtype'] = array_search($matches[3], array(1 => 'hour', 2 => 'project', 4 => 'month'));
                 }
-                
                 $subdoc = new DOMDocument();
                 @$subdoc->loadHTML($content); // hide a lot of HTML DOM validation warnings
                 $subxpath = new DOMXPath($subdoc);
@@ -877,9 +875,7 @@ class ExtractprojectsController extends Zend_Controller_Action
     {
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
-        
         require_once('HTMLParser/simple_html_dom.php');
-        
         /*---For GetACoder----------------*/
         $GAC_JobTypes = array('Project'=>2, 'Hourly Job'=>1,'Question'=>3);
         $GAC_to_replace = array('$',' ','&nbsp;',',');
@@ -1100,8 +1096,11 @@ END;
                             CURLOPT_URL => $project['external_url']
                         );
                         $cUrlHtml = $modelFromCurl->CurlPlatformPostClassic($options);
-                        $job_html = str_get_html($cUrlHtml);
+                       // $job_html = str_get_html($cUrlHtml);
                         
+						//Date 19/02/2014
+						$job_html= file_get_html($project['external_url']);
+						
                         $budgetElement = $job_html->find('div#mainLeft', 0)
                             ->find('ul#ctl00_guB_ucProjectDetail_ulBudget', 0);
                         $project['bids'] = (int)$budgetElement->find('li#liTotalProposal', 0)
@@ -1133,10 +1132,11 @@ END;
                         $project['external_id'] = $projectId;
                         break;
                 }
-               // echo "<pre>";
-				//print_r($project);die;
+              // echo "<pre>";
+				//print_r($project);
                 $projectModel->importProject($project, $platformId, $files);
             }
+			//die;
         }
     }
     

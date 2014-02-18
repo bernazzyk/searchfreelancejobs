@@ -20,7 +20,7 @@
                     <td class="cell_1"><a href="/projects/detail/project/<?= $Project['url'] ?>" onclick="return false;"><?php print $Project['title'];?></a></td>
                     <td>
                         <?php
-                        if ((float)$Project['budget_low']):
+                        if ((float)$Project['budget_low'] || (float)$Project['budget_high']):
                             echo $this->CurrenciesArray[$Project['budget_currency']] . number_format($Project['budget_low']);
                             echo $Project['budget_high'] > $Project['budget_low'] ? '&ndash;' . number_format($Project['budget_high']) : '';
                             switch ($Project['jobtype']):

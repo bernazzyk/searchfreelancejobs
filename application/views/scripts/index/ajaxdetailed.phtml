@@ -75,7 +75,7 @@
 		<div id="ext_bottom_right">
 			<p>Budget:&nbsp;<span id="ext_bott_budget"> 
             <?php
-            if ((float)$this->Project['budget_low']):
+            if ((float)$this->Project['budget_low'] || (float)$this->Project['budget_high']):
                 echo $this->CurrenciesArray[$this->Project['budget_currency']] . number_format($this->Project['budget_low']);
                 echo $this->Project['budget_high'] > $this->Project['budget_low'] ? '&ndash;' . number_format($this->Project['budget_high']) : '';
                 switch ($this->Project['jobtype']):
