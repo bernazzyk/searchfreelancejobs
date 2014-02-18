@@ -1,0 +1,118 @@
+/* Reset */
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,dfn,th,var{font-style:normal;font-weight:normal;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+
+
+
+body{
+margin:0;
+padding:0;
+background:#d9d9d9 url(../images/bg.gif) center top repeat-x;
+font-family:"Helvetica Neue",Helvetica, Arial;
+}
+
+.mr20{
+margin-right: 20px;
+}
+
+#content{
+background: url(../images/mid_bg.jpg) center top no-repeat;
+padding-top: 125px;
+text-align: center;
+}
+
+p{
+font-size: 13px;
+color: #656565;
+line-height: 22px;
+margin-bottom: 10px;
+}
+
+a{
+color: #2a6888;
+text-decoration: none;
+}
+
+a:hover{
+text-decoration: underline;
+}
+
+h1{
+color: #fff;
+font-size: 36px;
+margin-bottom: 15px;
+}
+
+h3{
+font-family: Georgia, helvetica, arial;
+font-size: 16px;
+color: #fff;
+font-style: italic;
+margin-bottom: 35px;
+}
+
+h2{
+font-size: 22px;
+color: #2a6888;
+margin-bottom: 8px;
+}
+
+.main{
+width: 884px;
+padding-bottom: 30px;
+margin: 0 auto;
+background: url(../images/shadow.png) left bottom no-repeat;
+}
+
+.mcontent{
+min-height: 153px;
+background:#ebebeb url(../images/main.gif) left top repeat-x;
+width: 698px;
+border-left: 1px solid #f7f7f7;
+margin: 0 auto;
+border-right: 1px solid #f7f7f7;
+padding: 20px;
+}
+
+.box{
+border: 1px solid #fff;
+background: #ededed;
+-moz-box-shadow: 1px 2px 3px #C6C5C5;
+-webkit-box-shadow: 1px 2px 3px #C6C5C5;
+float: left;
+text-align: left;
+min-height: 110px;
+padding: 20px;
+width: 180px;
+}
+
+.box2{
+border: 1px solid #fff;
+background: #ededed;
+-moz-box-shadow: 1px 2px 3px #C6C5C5;
+-webkit-box-shadow: 1px 2px 3px #C6C5C5;
+float: left;
+text-align: left;
+min-height:110px;
+padding: 20px;
+width: 172px;
+}
+
+.box2 a{
+float: left;
+margin-right: 10px;
+}
+
+a.get{
+background: #3e7a9a;
+color: #fff;
+border: 1px solid #41728c;
+padding: 3px 7px;
+font-size: 16px;
+}
+
+a:hover.get{
+background: #41728c;
+border: 1px solid #3e7a9a;
+text-decoration: none;
+}
