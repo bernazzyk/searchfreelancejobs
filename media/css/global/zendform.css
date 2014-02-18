@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+
+#view-content .zend_form {
+    margin: 10px 0;
+    width: 550px;
+    margin:5px auto;
+    padding:0;
+    overflow:auto;
+    font-family: HelveticaNeue;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+#view-content .zend_form dt {
+    padding:0;
+    clear:both;
+    width:30%;
+    float:left;
+    text-align:right;
+    margin:5px 5px 5px 0;
+}
+
+#view-content .zend_form dd {
+    padding:0;
+    float:left;
+    width:68%;
+    margin:5px 2px 5px 0;
+}
+
+#view-content .zend_form p {
+    padding:0;
+    margin:0;
+}
+
+#view-content .zend_form input, #view-content .zend_form textarea {
+    margin:0 0 2px 0;
+    padding:0;
+    font-size: 16px;
+}
+
+#view-content .submit {
+    float:right;
+}
+
+#view-content .required:before {content:'* '}

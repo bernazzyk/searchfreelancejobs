@@ -1,0 +1,179 @@
+table#results {
+	font-family : arial;
+}
+
+.msgNoProjectPopupPosition {
+    font-weight: normal;
+    margin-left: 5px;
+    margin-top: -140px;
+    position: absolute;
+    z-index: 1;
+}
+.msgProjectPopupPosition {
+    display: inline;
+    font-weight: normal;
+    margin-left: 5px;
+    position: absolute;
+    z-index: 1;
+}
+.msgProfilePopupPosition {
+    display: inline;
+    font-weight: normal;
+    margin-left: 5px;
+    position: absolute;
+    z-index: 1;
+}
+.msgEProfilePopupPosition {
+    display: inline;
+    font-weight: normal;
+    margin-left: 5px;
+    margin-top: -115px;
+    position: absolute;
+    z-index: 1;
+}
+.newMsg {
+    background-color: #FFFFFF;
+    border-bottom: 1px dotted #CCCCCC;
+    color: #333333;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 10px;
+}
+.borderBotGrayDash {
+    border-bottom: 1px dotted #CCCCCC;
+}
+.newMsg span {
+    color: #333333;
+    font-weight: bold;
+}
+.oldMsg {
+    background-color: #F5F5F5;
+    border-bottom: 1px dotted #CCCCCC;
+    color: #666666;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 10px;
+}
+.oldMsg span {
+    color: #666666;
+    font-weight: normal;
+}
+.msgSprite {
+    background-image: url("/media/image/guru/i-msg-sprite.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.msgTitleImage {
+    background-position: -1px -1px;
+    height: 46px;
+    width: 41px;
+}
+.msgPrivate {
+    background-position: -1px -52px;
+    height: 18px;
+    width: 20px;
+}
+.msgAnnouncement {
+    background-position: -1px -75px;
+    height: 18px;
+    width: 20px;
+}
+.msgQuestion {
+    background-position: -1px -98px;
+    height: 18px;
+    width: 20px;
+}
+.msgRefresh {
+    background-position: -1px -121px;
+    height: 18px;
+    width: 20px;
+}
+.msgAlert {
+    background-position: -24px -52px;
+    height: 15px;
+    width: 18px;
+}
+.msgNext {
+    background-position: -1px -144px;
+    height: 12px;
+    width: 5px;
+}
+.uploadifyProgress {
+    background-color: #FFFFFF;
+    border-color: #808080 #C5C5C5 #C5C5C5 #808080;
+    border-style: solid;
+    border-width: 1px;
+    margin-top: 0;
+    width: 100%;
+}
+.uploadifyProgressBar {
+    background-color: #0099FF;
+    height: 3px;
+    width: 1px;
+}
+.butttonGray {
+    background: url("/images/buttons/button-gradient-Gray.gif") repeat-x scroll center bottom #F5F5F5;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    color: #666666;
+    cursor: pointer;
+    font-family: Arial;
+    font-weight: bold;
+    margin: 0;
+    padding: 4px 10px;
+}
+.borderGrayTopBottom {
+    border-bottom: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+}
+.backFAFAFA {
+    background-color: #FAFAFA;
+}
+.borderBotGrayDash {
+    border-bottom: 1px dotted #CCCCCC;
+}
+.buttonGray {
+    background: url("/images/button-gradient-Gray.gif") repeat-x scroll center bottom #F5F5F5;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px 3px 3px 3px;
+    color: #666666;
+    cursor: pointer;
+    height: 26px;
+    margin: 0;
+    padding: 3px 10px;
+    text-decoration: none;
+}
+.buttonGray:hover {
+    border: 1px solid #BCBCBC;
+    color: #333333;
+    text-decoration: none;
+}
+.buttonGray:active {
+    background: url("../images/button-gradient-GrayFlip.gif") repeat-x scroll center bottom #F5F5F5;
+    border: 1px solid #BCBCBC;
+    color: #333333;
+}
+.buttonGray[disabled] {
+    background: none repeat scroll 0 0 #F5F5F5;
+    border: 1px solid #E0E0E0;
+    color: #999999;
+    cursor: default;
+}
+.modalBtnRow {
+    background: none repeat scroll 0 0 #F5F5F5;
+    border-top: 1px solid #CCCCCC;
+    padding: 8px;
+}
+.cancelX {
+    color: #CCCCCC;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 1px 2px;
+    text-decoration: none;
+}
+.cancelX:hover {
+    background: none repeat scroll 0 0 #438AA2;
+    color: #FFFFFF;
+    text-decoration: none;
+}

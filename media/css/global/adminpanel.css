@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+header {
+    margin: 30px;
+}
+
+.logo img {
+    border: 0;
+}

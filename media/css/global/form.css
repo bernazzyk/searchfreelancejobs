@@ -1,0 +1,27 @@
+label{
+	font-size:14px;
+	color:#808285;
+	padding-right:10px;
+}
+input[type='text'], select, textarea{
+	background-image:url(/mobile/media/image/backgrounds/input-bg.png);
+	background-position:top left;
+	background-repeat:repeat-x;
+}
+select{
+	-moz-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding:3px;
+	width:200px;
+
+}
+input[type='text']{
+	-moz-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding:3px;
+	width:200px;
+}
