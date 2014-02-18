@@ -1,0 +1,38 @@
+﻿<script type="text/javascript">
+function deletePhoto(pid)
+{
+	if(pid)
+	{
+		window.location.href = '/profile/deletephoto/pid/'+pid; 
+	}
+	return false;
+}
+</script>
+<div class="portfolioPhoto">
+<h3 align="center">Portfolio Photos</h3>
+<?php if(count($this->photoRows)!=10) { ?>
+ <a href="/profile/uploadphoto" class="a_std_btn blue_submit float_right">Add Photo</a>
+ <?php
+ }
+ if(!empty($this->photoRows)) { ?>
+ <table align="left">
+ <tr>
+ <?php 
+ 	$c =1;
+ 	foreach($this->photoRows as $photoRow) { ?>
+   <td align="center">
+   <?php echo $photoRow['title']; ?>
+   <img width="180" height="135" class="avatar_max_width" src="./data/portfolioPhoto/<?php echo $photoRow['photos'];?>" /><br />
+   <a class="remove_btn" href="javascript:void(0);" onclick="deletePhoto('<?php echo $photoRow['photos_id'];?>')" >Remove</a>
+   </td>
+  <?php if($c==5) 
+  	echo "</tr><tr>";
+  	$c++;
+	} 
+	?>
+   </tr>
+</table>
+ <?php 
+ }
+ ?>
+</div>

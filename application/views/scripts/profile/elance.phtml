@@ -1,0 +1,29 @@
+<?php $ElanceSubstitution = array(	'userId'				=> 'User Id',
+									'userName'				=> 'User Name',
+									'businessName'			=> 'Name',
+									'companyBusinessName'	=> 'Company',
+									'country'				=> 'Country',
+									'earnings'				=> 'Earnings',
+									'feedback'				=> 'Feedback'
+								);
+?>
+<div class="std_inner_container">
+	<?php //print_r ($this->ElanceProfile); ?>
+		<h3>Elance Profile <img title="" alt="" src="/media/image/logos/logo_elance.png"></h3>
+		<div class="elance_profile">
+			
+			<?php foreach($ElanceSubstitution as $key => $Item)
+			{
+				if(isset($this->ElanceProfile[$key]))
+				{
+				?>
+					<div class="profile_item">
+						<label class="pi_name"><?php print $Item;?></label>
+						<div class="pi_content"><?php print $this->ElanceProfile[$key];?></div>
+					</div>
+				<?php
+				}
+			}
+			?>
+		</div>
+</div>

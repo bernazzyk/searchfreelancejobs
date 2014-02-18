@@ -1,0 +1,29 @@
+<?php if ($this->isConnected): ?><frameset rows="55,100%">
+        <frame src="/profile/backtoprofile?back=<?= isset($_GET['back']) ? urlencode($_GET['back']) : '/' ?>">
+        <frame src="<?php echo $this->project->getBidUrl() ?>">
+    </frameset><noframes></noframes>
+<?php else: ?>
+    
+    <p>Please connect your <?php echo $this->platform->name ?> account before submitting a bid.</p>
+    <div class="remote_login" style="display: block; background: none; border: 0; margin-top: 10px; position: static;" id="remote_login_form">
+        <input type="hidden" id="platformId" value="<?= $this->platform->id ?>">
+        <div class="form_row">
+            <label>Username<span class="star">*</span></label>
+            <input type="text" name="username">
+        </div>
+        
+        <div class="form_row remote_password">
+            <label>Password<span class="star">*</span></label>
+            <input type="password" name="password">
+        </div>
+    </div>
+    
+    <div class="form_row" id="sign_in_container" style="float: left; clear: left;">
+        <input class="blue_submit search_btn" type="submit" id="submit_remote2" name="submit_remote" value="Add">
+    </div>
+    
+    <div class="form_row" id="no_account" style="display: block; float: left; clear: left; margin-top: 20px;">
+        <span class="no_account">If you <b>don't</b> have an account on this platform</span>
+        <a id="register_for_account" href="<?= $this->platform->affiliate ?>" style="margin-left: 90px;">Register for an Account</a>
+    </div>
+<?php endif ?>

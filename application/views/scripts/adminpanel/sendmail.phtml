@@ -1,0 +1,17 @@
+<?php $this->headTitle('Send Mail');?>
+<style type="text/css">
+textarea { width:400px; height:150px;}
+</style>
+<ul class="breadcrumb">
+  <li><a href="/adminpanel/">Adminpanel</a> <span class="divider">/</span></li>
+  <li>Send Mail</li>
+</ul>
+<?php if ($this->send): ?>
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        Email successfully sent to All Users.
+    </div>
+<?php endif ?>
+<div style="margin-left:50px;">
+<?php echo $this->form; ?>
+</div>

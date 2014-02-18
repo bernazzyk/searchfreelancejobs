@@ -1,0 +1,37 @@
+<h3>My Feedbacks
+	<img src="/media/image/logos/logo_elance.png" alt="" title="">
+</h3>
+<?php
+if(isset($this->feedback))
+{
+$Substitution = array(
+			'feedback6Months'			=>	'Nunmber of reviews recieved in the last 6 months',
+			'posFeedback6Months'		=>	'Nubmer of positive reviews recieved in the last 6 months',
+			'avgFeedbackScore6Months'	=>	'Average rating of the last 6 months reviews',
+			
+			'feedback12Months'			=>	'Nunmber of reviews recieved in the last 12 months',
+			'posFeedback12Months'		=>	'Nubmer of positive reviews recieved in the last 12 months',
+			'avgFeedbackScore12Months'	=>	'Average rating of the last 12 months reviews',
+			
+			'feedback'					=>	'Nunmber of reviews recieved',
+			'posFeedback'				=>	'Nubmer of positive reviews recieved',
+			'avgFeedbackScore'			=>	'Average rating of the reviews'
+);
+?>
+
+<ul class="e_ul">
+<?php
+foreach($Substitution as $key=>$value)
+{
+	?>
+	<li>
+		<span class="e_li_title"><?php print $value.': ';?></span>
+		<span class="e_li_value"><?php print $this->feedback[$key];?></span>
+	</li>
+	<?php
+}
+?>
+</ul>
+<?php
+}
+?>

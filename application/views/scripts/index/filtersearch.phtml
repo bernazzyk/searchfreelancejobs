@@ -1,0 +1,364 @@
+<?php 
+$auth = Zend_Auth::getInstance();
+					$authStorage = $auth->getStorage();
+					$user_id = $authStorage->read();
+if($this->subsCat == 0 && $user_id!='') { ?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#search_block_categories').click(function() {
+    $.fancybox({
+        type: 'iframe',
+        content: $('#subscribe_category').html(),
+    });
+});	
+    }); 
+	function selectAll(bx)
+	{
+		//alert(bx.checked);
+		 var checkboxes = new Array();
+     	checkboxes = document.getElementsByName('category[]');
+     	for (var i = 0; i < checkboxes.length; i++) {
+         if (checkboxes[i].type == 'checkbox') {
+             checkboxes[i].checked = bx.checked;
+         }
+     }
+
+	}
+	function checkValidate()
+	{
+		var checkboxes = new Array();
+     	checkboxes = document.getElementsByName('category[]');
+     	for (var i = 0; i < checkboxes.length; i++) {
+        if(checkboxes[i].checked) {
+             break;
+         }}
+		 if(i==checkboxes.length)
+		 {
+		 alert('Please select at least on category');
+		 return false;
+		 }
+	}
+</script>
+
+<style type="text/css">
+.catRow
+{
+	margin:5px;
+}
+</style>
+<div style="display: none">
+<div id="subscribe_category" class="subscribe_category">
+<form name="subscribeCategory" id="subscribeCategory" action="/index/subscribecategory" method="post" onsubmit="return checkValidate();">
+<label class="item_title">Categories</label>
+<div class="catRow">
+<input type="checkbox" name="checkAll" id="checkAll" onchange="selectAll(this);"/><label>All Categories</label>
+</div>
+<?php 
+foreach($this->ActiveCategories as $Category)
+{
+	if($Category['name']!='Others')
+	{
+	?>
+<div class="catRow">
+<input type="checkbox" name="category[]" id="category<?php echo $Category['id'];?>" value="<?php echo $Category['id'];?>" />
+<label><?php echo $Category['name'];?></label>
+</div>
+<?php 
+} }
+?>
+<input type="submit" name="submit" class="blue_submit search_btn" value="Subscribe">
+
+</form>
+
+</div>
+</div>
+<?php } ?>
+<div id="content_bottom_right_box">			
+<!--<div class="double_border"></div>  -->
+<div class="content_bottom_right_box_item">        
+    <div class="content_bottom_right_box_item_inner">        
+        <div class="title">
+            <p>Advanced search:</p>
+        </div>
+                        
+		<div class="content">
+			<div class="form_filter_container">
+				<form method="post" action="/projects/filter/">
+				
+					<?php if(isset($this->ActiveCategories) && $this->ActiveCategories)
+					{?>
+						<div class="search_block" id="search_block_categories" categories="<?php print $this->categories;?>">							<script type="text/javascript">								/*$(document).ready(function(){									$(".filter_chk_categories").click(function(){										$.colorbox({html:"<h1>Welcome</h1>"});									});								});*/							</script>
+							<label class="item_title">Categories</label>
+							<div class="row">
+							<?php
+								if($this->categories_array)
+								{
+									$checked = (in_array(0, $this->categories_array))? 'CHECKED' : '';
+								}
+								else { 
+									$checked = 'CHECKED';
+								}
+								//$checked = (in_array(0, $this->categories_array))? 'CHECKED' : '';
+							?>
+								<input <?php print $checked;?> name="category[0]" id="filter_chk_0" type="checkbox" class="" categ_id="0"/>
+								<label for="filter_chk_0">All Categories</label>
+								
+							</div>							
+							<?php
+						
+							foreach($this->ActiveCategories as $Category)
+							{
+								$checked = (in_array($Category['id'], $this->categories_array))? 'CHECKED' : '';
+							?>
+								<div class="row">
+									<input name="category[<?php print $Category['id'];?>]" id="filter_chk_<?php print $Category['id'];?>" type="checkbox" <?php print $checked;?> class="filter_chk_categories" categ_id="<?php print $Category['id'];?>"/>
+									<label for="filter_chk_<?php print $Category['id'];?>"><?php print $Category['name'];?></label>
+								</div>
+							<?php								
+							}?>
+						</div>
+					<?php
+					}?>	
+					
+					<div class="search_block">
+						<div class="form_row">
+							<label class="item_title">Keywords</label>
+							<input type="text" class="full" name="keywords" value="<?php print $this->search;?>">
+						</div>	
+					</div>	
+				
+					<div class="search_block" id="search_block_platforms" platforms="<?php print $this->platforms;?>">
+						<div class="form_row">
+							<label class="item_title">Sites</label>
+					
+							<?php
+								if($this->platforms_array)
+								{
+									$checked = (in_array(0, $this->platforms_array))? 'CHECKED' : '';
+								}
+								else { 
+									$checked = 'CHECKED';
+								}
+							?>
+					
+							<div class="row">
+								<input name="platform0" id="filter_platform_chk_0" type="checkbox" class="" platform_id="0" <?php print $checked;?>/>
+								<label for="filter_platform_chk_0">All platforms</label>
+							</div>
+							
+							<?php foreach($this->Platforms as $Platform)
+							{
+								$checked = (in_array($Platform['id'], $this->platforms_array))? 'CHECKED' : '';
+							?>
+								<div class="row">
+									<input name="platform[<?php print $Platform['id'];?>]" id="filter_platform_chk_<?php print $Platform['id'];?>" type="checkbox" class="filter_chk_platforms" platform_id="<?php print $Platform['id'];?>" <?php print $checked;?>/>
+									<label for="filter_platform_chk_<?php print $Platform['id'];?>"><?php print $Platform['name'];?></label>
+								</div>
+							<?php	
+							}
+							?>
+                            <!--<div class="row">
+                            <input name="platform15" id="filter_platform_chk_15" type="checkbox" class="filter_chk_platforms" platform_id="15" />
+                            <label for="filter_platform_chk_15">craigslist</label>
+                            </div>
+                            <div class="row">
+                                <input name="platform16" id="filter_platform_chk_16" type="checkbox" class="filter_chk_platforms" platform_id="16" />
+                                <label for="filter_platform_chk_16">monster</label>
+                            </div>
+                            <div class="row">
+                                <input name="platform17" id="filter_platform_chk_17" type="checkbox" class="filter_chk_platforms" platform_id="17" />
+                                <label for="filter_platform_chk_17">careerboard</label>
+                            </div>
+                            <div class="row">
+                                <input name="platform18" id="filter_platform_chk_18" type="checkbox" class="filter_chk_platforms" platform_id="18" />
+                                <label for="filter_platform_chk_18">coroflot</label>
+                            </div>
+                            <div class="row">
+                                <input name="platform18" id="filter_platform_chk_19" type="checkbox" class="filter_chk_platforms" platform_id="19" />
+                                <label for="filter_platform_chk_19">behance.net</label>
+                            </div>
+                            <div class="row">
+                                <input name="platform18" id="filter_platform_chk_20" type="checkbox" class="filter_chk_platforms" platform_id="20" />
+                                <label for="filter_platform_chk_20">dice.com</label>
+                            </div>
+                            <div class="row">
+                                <input name="platform18" id="filter_platform_chk_21" type="checkbox" class="filter_chk_platforms" platform_id="21" />
+                                <label for="filter_platform_chk_21">simplyhired.com</label>
+                            </div>
+                            <div class="row">
+                                <input name="platform18" id="filter_platform_chk_22" type="checkbox" class="filter_chk_platforms" platform_id="22" />
+                                <label for="filter_platform_chk_22">krop.com</label>
+                            </div>
+                            <div class="row">
+                                <input name="platform18" id="filter_platform_chk_23" type="checkbox" class="filter_chk_platforms" platform_id="23" />
+                                <label for="filter_platform_chk_23">sologig.com</label>
+                            </div>-->
+						</div>
+					</div>
+					<?php 
+					if((isset($this->is_main_page)) && $this->is_main_page)
+					{
+						$main_page = 1;
+						$checked_hourly = $checked_fixed = 'checked';
+					} else {
+						$main_page = 0;
+						$checked_hourly = ($this->price_limits_hourly)? 'checked' : '';
+						$checked_fixed = ($this->price_limits_fixed)? 'checked' : '';
+					}
+					?>
+					<div class="search_block" id="search_block_budget" main_page="<?php print $main_page;?>" price_limits_hourly="<?php print $this->price_limits_hourly;?>" price_limits_fixed="<?php print $this->price_limits_fixed;?>">
+							<label class="item_title">Budget(USD)</label>			
+								<div class="row">
+									<input id="chk_price_hourly" type="checkbox" <?php print $checked_hourly;?> name="chk_price_hourly"/>
+									<label for="chk_price_hourly">Hourly</label>
+								</div>
+								
+								<div class="row">
+									<div id="slider_1" class="slider_box"></div>
+									<div id="rate_range">
+										<span>Min:&nbsp;</span><div id="slider_1_result_1"></div><span>$/hr</span><span class="marginated">Max:&nbsp;</span><div id="slider_1_result_2"></div><span>$/hr</span>
+										<input type="hidden" id="hidden_1_1" name="price_min" value="0"/>
+										<input type="hidden" id="hidden_1_2" name="price_max" value="100"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+								<br />
+								
+								<div class="row">
+									<input id="chk_price_fixed" name="chk_price_fixed" <?php print $checked_fixed;?> type="checkbox"/>
+									<label for="chk_price_fixed">Fixed</label>
+								</div>
+								
+								<div class="row">
+									<div id="slider_2" class="slider_box"></div>
+									<div id="rate_range">
+										<span>Min:&nbsp;</span><div id="slider_2_result_1">1500</div><span>$</span><span class="marginated">Max:&nbsp;</span><div id="slider_2_result_2">3500</div><span>$</span>
+										<input type="hidden" id="hidden_2_1" name="price_min_fixed" value="0"/>
+										<input type="hidden" id="hidden_2_2" name="price_max_fixed" value="10000"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+							</div>					
+					
+					<!--
+					<div class="search_block">
+						<div class="form_row">
+							<label class="item_title">Budget ($USD)</label>
+							<input type="text" name="price_min">
+							<label>Min</label>
+							<input type="text" name="price_max">
+							<label>Max</label>
+						</div>
+					</div>
+					-->
+					
+					<?php $dates_left=array(''=>'Any',
+										'1'=>'Less Than 24 hours left',
+										'3'=>'Less Than 3 days left',
+										'7'=>'Less Than 7 days left'
+										)?>
+					
+					<div class="search_block">
+						<div class="form_row">
+							<label class="item_title">By Time Left</label>
+							
+							<?php
+							
+							foreach($dates_left as $key=>$date)
+							{
+								$checked = ($key==$this->timeleft)? 'CHECKED' : '';
+								?>
+								<div class="row">
+									<INPUT TYPE=RADIO NAME="time_left" VALUE="<?php print $key;?>" id="time_left_<?= $key ?>" <?php print $checked;?>>
+									<label for="time_left_<?= $key ?>"><?php print $date;?></label>
+								</div>
+							<?
+							}
+							?>
+							
+							 
+						</div>
+					</div>
+					
+					<?php $dates_posted=array(''=>'Any',
+										'1'=>'Posted within 24 hours',
+										'3'=>'Posted within 3 days',
+										'7'=>'Posted within 7 days'
+										)?>
+					
+					<div class="search_block">
+						<div class="form_row">
+							<label class="item_title">By Posted Date</label>
+							
+							<?php
+								foreach($dates_posted as $key=>$date)
+								{
+									$checked = ($key==$this->posted_date_days)? 'CHECKED' : '';
+								?>
+									<div class="row">
+										<INPUT TYPE=RADIO NAME="posted_date" VALUE="<?php print $key;?>" id="posted_date_<?= $key ?>" <?php print $checked;?>>
+										<label for="posted_date_<?= $key ?>"><?php print $date;?></label>
+									</div>
+								<?php
+								}
+								$posted_start = '';
+								$posted_end = '';
+								//if($checked==='CHECKED')
+								//{
+									$checked = '';
+									$posted_date = explode("x", $this->posted_date_days);
+									if(isset($posted_date[0]) && isset($posted_date[1]))
+									{
+										$posted_date[0] = str_replace('v', '-', $posted_date[0]);
+										$posted_date[1] = str_replace('v', '-', $posted_date[1]);
+										$modelFromIndex = new Application_Model_Index();
+										
+										if($modelFromIndex->IsValidDate($posted_date[0]) && $modelFromIndex->IsValidDate($posted_date[1]))
+										{
+											$checked = 'CHECKED';
+											$posted_start = $posted_date[0];
+											$posted_end = $posted_date[1];
+										}
+									}
+								//}
+							?>
+								
+							<div class="row">
+								<INPUT TYPE=RADIO NAME="posted_date" VALUE="between" <?php print $checked;?>> Or between
+							</div>
+							<div class="row">
+								<input type="text" value="<?php print $posted_start;?>" class="date small_input" name="posted_start"> and
+								<input type="text" value="<?php print $posted_end;?>" class="date small_input" name="posted_end">
+							</div>
+						</div>
+					</div>
+				
+					<!--
+					<div class="form_row">
+						<label class="item_title">Platform</label>
+						<select id="platform_list">
+							<option value="0">Platform</option>
+							<?php foreach($this->Platforms as $Platform)
+							{
+							?>
+								<option value="<?php print $Platform['id'];?>"><?php print $Platform['name'];?></option>
+							<?php	
+							}
+							?>
+						</select>
+					</div>
+					-->
+					
+					<div class="align_center">
+						<input type="submit" class="blue_submit search_btn" value="Search"/>
+					</div>
+					
+				</form>
+			</div>
+		</div><!--End clas content-->                    
+	</div><!--right_box_item_inner-->
+</div><!--right_box_item-->
+</div>		                
+  

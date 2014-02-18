@@ -1,0 +1,21 @@
+﻿<?php 
+
+
+
+$this->headLink()
+
+         ->appendStylesheet( $this->baseUrl( 'media/css/global/global.css' ) )
+
+         ->appendStylesheet( $this->baseUrl( 'media/css/global/styles.css' ) )
+
+		 ->headLink( array( 'rel' => 'favicon', 'href' => $this->baseUrl( 'media/image/favicon.ico' ), 'PREPEND' ) )
+
+         ->headLink( array( 'rel' => 'SHORTCUT ICON', 'href' =>  $this->baseUrl( 'media/image/favicon.ico' ), 'PREPEND' ) );
+
+echo $this->cssHelper();
+
+
+
+echo $this->layout()->content;
+
+?>

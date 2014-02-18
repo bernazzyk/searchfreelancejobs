@@ -1,0 +1,73 @@
+<div id="my_ptc">
+    <?php if (!$this->hideSteps): ?>
+        <div class="step_info_">Step 2 of 3</div>
+    <?php endif ?>
+    <div id="step2_3">
+        <div class="round_rect_block">
+            <span class="rrb_title">Connect Freelance Platforms</span>
+            <ul class="connected_platforms">
+                <?php foreach ($this->connections as $platformId): ?>
+                    <li><span class="pl_name"><?php echo $this->platforms[$platformId]['name']?></span>
+                    <a class="disconnect" href="/profile/disconnect/pl/<?php echo $platformId?>">Disconnect</a></li>
+                <?php endforeach ?>
+            </ul>
+            <?php
+            // below is a historic legacy by the first developer of the project
+            // I suppose it is romanian language
+            //!!!!!!!!!!Atentie acesta va trebuie de modificat
+            if (count($this->connections) < count($this->platforms)):
+                ?>
+                <span id="add_new_platform" class="a_std_btn blue_submit float_left">Add</span>
+            <?php endif ?>
+        </div>
+        <?php if ($this->hideSteps): ?>
+            <a class="go_to_step_3" href="/profile/my/">Return to the profile</a>
+        <?php else: ?>
+            <a class="go_to_step_3" href="/index/step3/">When finished adding platforms, click here to continue</a>
+        <?php endif ?>
+    </div>
+    <div id="popup_remote_login" class="popup_type remote_login" style="left: 50%; margin-left: -200px;">
+        <img id="close" src="/media/image/new_design/popup-closeButton.png">
+        <label class="prl_title">Connect Freelance Platform Account</label>
+        <form id="remote_login_form" action="/auth/remote/">
+            <div class="form_row">
+                <label>Please select a platform<span class="star">*</span></label>
+                <select id="select_platform">
+                    <option value="0" pl_id="0">Choose platform</option>
+                    <?php
+                    foreach ($this->platforms as $platformId => $platform):
+                        if (!in_array($platformId, $this->connections)):
+                            ?>
+                            <option value="<?php echo $platformId ?>" affiliate="<?php echo $platform['affiliate'] ?>"><?php echo $platform['name'] ?></option>
+                            <?php
+                        endif;
+                    endforeach;
+                    ?>
+                </select>
+            </div>
+            
+            <div class="remote_credentials" style="width: 100%;">
+                <div class="form_row">
+                    <label>Username<span class="star">*</span></label>
+                    <input type="text" name="username">
+                </div>
+                
+                <div class="form_row remote_password">
+                    <label>Password<span class="star">*</span></label>
+                    <input type="password" name="password">
+                </div>
+            </div>
+            
+            <div class="append_section"></div>
+            
+            <div class="form_row" id="sign_in_container">
+                <input class="blue_submit search_btn" type="submit" id="submit_remote" name="submit_remote"  value="Add">
+            </div>
+            
+            <div class="form_row" id="no_account">
+                <span class="no_account">If you <b>don't</b> have an account on this platform</span>
+                <a id="register_for_account" href="" >Register for an Account</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,178 @@
+ <!--main container start-->
+ <script type="text/javascript">
+ //$(document).ready(function(){
+ /*
+ $("#messageSendButton").live('click', function(e){
+    $('div #msgSuccess').show();
+  });
+ });
+ */
+ function NotLogin(id)
+ {
+ $('#content_top').show();
+ 	$.fancybox({
+        				content:$('#'+id).html()
+						
+    			});
+				
+}
+ function sendMessage(id) 
+ { 
+ 	$('div #msgSuccess').hide();
+	$('div #error_msg').hide();
+	$('div #msgForm').show();
+ 	$('#account_id').val(id);
+	$.fancybox({
+        				type: 'iframe',
+						height: 300,
+        				width: 400,
+        				content: $('#send_message').html(),
+    			});
+			}
+	function send()
+	{
+		
+		var message = $.trim($('div .fancybox-wrap textarea#message').val());
+		if(message!='')
+		{
+		var stringData = $('div .fancybox-wrap form#messageForm').serialize();
+		$('div #msgSuccess').show();
+		$('div #msgForm').hide();
+		 setTimeout( function() {$.fancybox.close(); },2000); // 2000 = 2 secs
+		$.ajax({
+		type: "POST",
+		url: '/freelancers/sendmessage/',
+		data: stringData,
+		success: function(src){}
+		});
+		}
+		else 
+		{
+			//alert('no');
+			 $('div #error_msg').show();
+		} 
+	}	
+	</script>
+            
+         <div style="display: none">
+        <div id="upgradeLoginMsg"><div  style=" margin-top:40px;text-align:center; overflow:hidden;">Please login to become a featured members!</div></div>
+        <div id="sendMessageLoginMsg"><div  style=" margin-top:40px;text-align:center; overflow:hidden;">Please login to be able to send freelancer the message!</div></div>
+        <div id="viewProfileLoginMsg"><div  style=" margin-top:40px;text-align:center; overflow:hidden;">Please login to be able to acceess freelancer's profile!</div></div>
+       <div id="send_message" class="subscribe_category">
+        <div id="msgSuccess" style="display: none;text-align:center; overflow:hidden;">Your message was sent successfully!</div>
+        <div id="msgForm">
+<form name="messageForm" id="messageForm"  method="post" onsubmit="return false;">
+<label class="item_title">Send Message</label><br />
+<div class="catRow">
+<div id="error_msg" style="display:none; color:red;">Please enter your message text!</div>
+<textarea name="message" id="message" cols="40" rows="7" placeholder="Enter message text"></textarea> 
+<input type="hidden" name="account_id" id="account_id" />
+</div>
+<div class="catRow">
+<input type="submit" name="submit" id="messageSendButton" class="blue_submit search_btn" value="Send" onclick="send();">
+</div>
+</form>
+</div>
+</div>
+</div>
+                <div class="details">
+                 <h2 class="head_text"> Featured Profile </h2> 
+                  <div class="rightimg">
+                     <?php if($this->isFeaturedUser==0) { ?>
+                        <a <?php if($this->user_id!=0) { ?> href="/profile/upgrade/"  <?php } else { ?> href="javascript:void(0)" onclick="NotLogin('upgradeLoginMsg');" <?php } ?> >
+                          <img src="/media/image/right_img.png" alt=""/>
+                        </a>
+                        <?php } ?>
+                    </div>
+                    <div class="clear"></div>
+                   
+                    <div class="dropdwn">
+                        <p>Sort By</p>
+                        <form name="sortUser" id="sortUser" method="post">
+                        <select name="sortBy" id="sortBy" class="dropdwn_one" onchange="this.form.submit()">	
+                          <option value="name" <?php if(!empty($this->sortBy) && $this->sortBy=='name') { echo "selected='selected'"; } ?>>Name</option>
+                          <option  value="country" <?php if(!empty($this->sortBy) && $this->sortBy=='country') { echo "selected='selected'"; } ?>>Country</option>
+                        </select>
+                        </form>
+                    </div>
+                    
+                   <!--body portion start--> 
+                   <div class="inner_gallery">
+                   <?php if(!empty($this->freelancerRow)) { ?>
+                   <!--row one start-->
+                      <div class="bdy_gal_inner">
+                        <ul>
+                   <?php 
+				   $c=1;
+				   foreach($this->freelancerRow as $freelancerRow) {
+				   ?>
+                   
+                         <!--coloume-->
+                         <li>
+                          <div class="gal_inn_iamge">
+                            <div class="gal_inn_mainimg">
+                            <a <?php if($this->user_id!=0) { ?> href="/freelancers/details/id/<?php echo $freelancerRow['account_id']; ?>/" <?php } else { ?> href="javascript:void(0)" onclick="NotLogin('viewProfileLoginMsg');" <?php } ?>>
+                            <?php if($freelancerRow['picture']!='') { ?>
+                            <img src="/data/profilePictures/<?php echo $freelancerRow['picture'];?>" width="124" height="131" alt="" />
+                           <?php  } else {  ?>
+                             <img src="/media/image/gal_inner.png" alt="" />
+                           <?php } ?>
+                           </a>
+                            </div>
+                          </div>
+                          <div class="gal_inn_text">
+                           <p>Name: <?php if($freelancerRow['fname']!='' || $freelancerRow['lname']!='') {
+						   echo $freelancerRow['fname'].' '.$freelancerRow['lname'];
+						   }
+						   else if($freelancerRow['name']!='')
+						   {
+						   	echo $freelancerRow['name'];
+						   }
+						   else
+						   {
+						   	echo "N/A";
+						   }
+						   ?></p>
+                           <p>Skills: <?php if($freelancerRow['skills']!='') { 
+							$str = $freelancerRow['skills'];
+							$len =45;
+							$tail = max(0, $len-10);
+  							$trunk = substr($str, 0, $tail);
+  							$trunk .= strrev(preg_replace('~^..+?[\s,:]\b|^...~', '...', strrev(substr($str, $tail, $len-$tail))));
+							
+					
+						   
+						   echo $trunk;
+						   }else
+						   {
+						   	echo "N/A";
+						   }
+						   ?></p>
+                           <a href="javascript:void(0)" <?php if($this->user_id!=0) { ?>  onclick="sendMessage(<?php echo $freelancerRow['account_id'];?>)" <?php } else { ?> onclick="NotLogin('sendMessageLoginMsg');" <?php } ?>>Send a message</a>
+                          </div>
+                         </li>
+                         
+                      <?php if($c%3==0) {?>   
+                       
+                        </ul>
+                      </div>
+                      <div class="bdy_gal_inner">
+                        <ul>
+						<?php } } ?>  
+                       <!--row one end-->   
+                       <?php } ?>
+                       </ul>
+                       <div class="clear"></div>
+                    </div>
+                   
+                      <div class="pagination_sec">
+                      	 <?php echo $this->paginationControl($this->freelancerRow , 'Sliding', '/freelancers/pagination_controls.phtml'); ?>
+                        <div class="clear"></div>
+                      </div>
+                   <!--Body portion end-->
+                    
+               </div>
+               
+              
+              <!--main container start-->        
+       

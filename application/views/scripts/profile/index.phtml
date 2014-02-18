@@ -1,0 +1,133 @@
+<!--<div class="center_block_container">-->
+
+	<div class="std_inner_container">
+
+		<h3>Public Profile <img title="" alt="" src="/media/image/new-logo.png"></h3>
+
+		<?php if(isset($this->message_not_logged))
+
+		{
+
+			print $this->message_not_logged;
+
+		}?>
+
+		
+		<!---------------------------------LOGO-------------------------------->
+
+		<?php if(!empty($this->FreelancerInfo['picture']) && file_exists('./data/profilePictures/'.$this->FreelancerInfo['picture'])) : ?>		
+
+			<br /><img class="avatar_max_width" src="./data/profilePictures/<?php print $this->FreelancerInfo['picture'];?>" />
+
+		<?php endif; ?>
+
+		<!---------------------------------------------------------------------->
+         <ul id="top_menu_left" class="top_menu" style="float: right;margin: auto;margin-top: 136px;margin-right: 45px;">		
+		 <li><a id="subscribed_cat" class="evidentiate_blue" href="JavaScript:void();">Subscribed Categories</a></li>
+         </ul>
+		
+
+		<!---------------------------------NAME-------------------------------->
+
+		<label class="p_item_info_name">Name:</label>
+
+		<label class="p_item_info_content">
+
+			<?php print $this->UserInfo['name'];
+
+			if($this->UserInfo['lname']!=''&& $this->UserInfo['fname']!='' )
+
+			{?>
+
+				<?php print ' ( ' . $this->UserInfo['lname'] .' ' . $this->UserInfo['fname'] . ' )';?>
+
+				<?php
+
+			}
+
+			?>
+
+		</label>
+
+		<!---------------------------------------------------------------------->
+
+		
+
+		<!---------------------------------COMPANY-------------------------------->
+
+		<?php if($this->UserInfo['company']!='')
+
+		{
+
+		?>
+
+			<label class="p_item_info_name">Company Name</label>
+
+			<label class="p_item_info_content"><?php print $this->UserInfo['company'];?></label>
+
+			<?php
+
+		}
+
+		?>
+
+		<!---------------------------------------------------------------------->
+
+		
+
+		<!---------------------------------CONTACTS-------------------------------->
+
+			<label class="p_item_info_name">Contacts</label>
+
+				<label class="p_item_info_name_small">Email</label>
+
+				<label class="p_item_info_content_small"><?php print $this->UserInfo['email'];?></label>
+
+				<?php if($this->UserInfo['phone'] != '')
+
+				{?>
+
+					<label class="p_item_info_name_small">Phone</label>
+
+					<label class="p_item_info_content_small"><?php print $this->UserInfo['phone'];?></label>
+
+				<?php
+
+				}
+
+				?>
+
+		<!---------------------------------------------------------------------->
+
+					
+
+		<label class="p_item_info_name">Overview:</label>
+
+		<label class="p_item_info_name">Feedback:</label>
+
+		
+
+		<label class="p_item_info_name">Experience:</label>
+
+		<label class="p_item_info_content"><?php print $this->FreelancerInfo['experience'];?></label>
+
+		
+
+		<label class="p_item_info_name">Description:</label>
+
+		<label class="p_item_info_content"><?php print $this->FreelancerInfo['description'];?></label>
+
+		
+
+		<label class="p_item_info_name">Portfolio:</label>
+
+		<label class="p_item_info_content"><?php print $this->FreelancerInfo['portfolio'];?></label>
+
+		
+
+		<label class="p_item_info_content"><a id="pub_prof_update" href="/profile/create/" class="blue_submit search_btn a_std_btn float_left">UPDATE</a></label>
+
+	</div>
+
+<!--</div>-->
+

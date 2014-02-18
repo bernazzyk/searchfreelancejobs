@@ -1,0 +1,40 @@
+<?php $this->headTitle('User Accounts') ?>
+
+<ul class="breadcrumb">
+  <li><a href="/adminpanel/">Adminpanel</a> <span class="divider">/</span></li>
+  <li>User Accounts</li>
+</ul>
+
+<table class="table table-condensed">
+    <thead>
+        <tr>
+            <th> # </th>
+            <th> Type </th>
+            <th> Email </th>
+            <th style="width: 100px;"> Confirmed </th>
+            <th style="width: 160px;"> </th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->paginator as $user): ?>
+            <tr>
+                <td> <?= (int)$user->id ?> </td>
+                <td> <?= $this->escape($user->type) ?> </td>
+                <td> <?= $this->escape($user->email) ?> </td>
+                <td> <i class="<?= $user->confirmed ? 'icon-ok' : 'icon-remove' ?>"></i> </td>
+                <td>
+                    <a href="/adminpanel/user-edit/id/<?= (int)$user->id ?>" class="btn btn-primary">
+                        <i class="icon-pencil icon-white"></i>
+                        Edit
+                    </a>
+                    <a href="/adminpanel/user-delete/id/<?= (int)$user->id ?>" onclick="return confirm('Are you sure you want to delete the user?');" class="btn btn-danger">
+                        <i class="icon-trash icon-white"></i>
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
+
+<?= $this->paginator ?>

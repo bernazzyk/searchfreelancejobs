@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php
+        echo $this->headTitle('Adminpanel');
+        echo $this->headMeta();
+        echo $this->headScript()
+            ->prependFile('/media/bootstrap/js/bootstrap.min.js')
+            ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js');
+        echo $this->headLink()
+            ->appendStylesheet('/media/bootstrap/css/bootstrap.min.css')
+            ->appendStylesheet('/media/css/global/adminpanel.css');
+        ?>
+    </head>
+    <body>
+        <header>
+            <a href="/adminpanel/" class="logo"><img src="/media/image/new-logo.png" style="padding-top:3px;padding-bottom:3px;" alt="Freelancer.fm"></a>
+        </header>
+        
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span2">
+                    <ul class="nav nav-tabs nav-stacked">
+                        <li <?= 'home' == $this->activeTab ? 'class="active"' : '' ?>>
+                            <a href="/adminpanel/"><i class="icon-home"></i> Home</a>
+                        </li>
+                        <li><a href="/"><i class="icon-arrow-left"></i> Back to website</a></li>
+                        <li <?= 'users' == $this->activeTab ? 'class="active"' : '' ?>>
+                            <a href="/adminpanel/users"><i class="icon-user"></i> User Accounts</a>
+                        </li>
+                        <li <?= 'contents' == $this->activeTab ? 'class="active"' : '' ?>>
+                            <a href="/adminpanel/contents"><i class="icon-pencil"></i> Page Content</a>
+                        </li>
+                        <li <?= 'platforms' == $this->activeTab ? 'class="active"' : '' ?>>
+                            <a href="/adminpanel/platforms"><i class="icon-pencil"></i> Platforms</a>
+                        </li>
+                        <li <?= 'platforms_header' == $this->activeTab ? 'class="active"' : '' ?>>
+                            <a href="/adminpanel/manageplatformsheader"><i class="icon-pencil"></i> Header for all platforms</a>
+                        </li>
+                        <li <?= 'payment_page' == $this->activeTab ? 'class="active"' : '' ?>>
+                            <a href="/adminpanel/managepaymentpage"><i class="icon-pencil"></i> Manage Payment page</a>
+                        </li>
+                        <li <?= 'mail' == $this->activeTab ? 'class="active"' : '' ?>>
+                            <a href="/adminpanel/sendmail"><i class="icon-pencil"></i> Send Mails</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="span10">
+                    <?= $this->layout()->content ?>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

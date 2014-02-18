@@ -1,0 +1,12 @@
+<?php $this->headTitle('Page Content') ?>
+
+<ul class="breadcrumb">
+  <li><a href="/adminpanel/">Adminpanel</a> <span class="divider">/</span></li>
+  <li>Page Content</li>
+</ul>
+
+<ul>
+    <?php foreach ($this->contents as $content): ?>
+        <li><a href="/adminpanel/content-edit/id/<?= (int)$content->id ?>"><?= $this->escape($content->page) ?></a></li>
+    <?php endforeach ?>
+</ul>

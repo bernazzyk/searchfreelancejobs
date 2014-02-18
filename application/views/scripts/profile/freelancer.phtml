@@ -1,0 +1,28 @@
+<?php $FreelancerSubstitution = array(	'userid'				=> 'User Id',
+									'username'				=> 'User Name',
+									'fullname'				=> 'Name',
+									'company_name'	=> 'Company',
+									'city'				=> 'City',
+									'postalcode'				=> 'Postal Code',
+									'country'				=> 'Country',
+									'profiletext'				=> 'Profile description'
+									//'earnings'				=> 'Earnings',
+									//'feedback'				=> 'Feedback'
+								);
+?>
+<div class="std_inner_container">
+	<?php //print_r ($this->FreelacerProfile); ?>
+		<h3>Freelancer Profile <img title="" alt="" src="/media/image/logos/logo_freelancer.png"></h3>
+		<div class="elance_profile">
+			
+			<?php foreach($FreelancerSubstitution as $key => $Item)
+			{?>
+				<div class="profile_item">
+					<label class="pi_name"><?php print $Item;?></label>
+					<div class="pi_content"><?php print $this->FreelacerProfile[$key];?></div>
+				</div>
+			<?php
+			}
+			?>
+		</div>
+</div>

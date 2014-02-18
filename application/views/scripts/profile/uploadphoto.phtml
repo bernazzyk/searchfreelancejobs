@@ -1,0 +1,27 @@
+<style type="text/css">
+</style>
+	<?php
+
+	if(isset($this->message))
+
+	{?>
+
+		<div class="message_alert">
+
+		<?php print $this->message;?>
+
+		</div> 
+
+	<?php
+
+	} 
+	
+	if($this->userid!=0)
+
+	{
+
+	print $this->form;
+
+	}
+
+	?>

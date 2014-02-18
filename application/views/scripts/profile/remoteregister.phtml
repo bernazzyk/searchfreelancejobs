@@ -1,0 +1,15 @@
+<?php
+if(isset($this->Platform))
+{
+?>
+<frameset rows="55,100%">
+	<frame src="/profile/backtoprofile/pl/<?php print $this->Platform['id'];?>">
+	<frame src="<?php print $this->Platform['affiliate']?>">
+</frameset>
+<?php
+}
+else if(isset($this->message_not_logged))
+{
+	print $this->message_not_logged;
+}
+?>

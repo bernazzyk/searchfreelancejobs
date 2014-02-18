@@ -1,0 +1,50 @@
+<form id="pph_form" method="POST" action="" currency="<?php print $this->CurrencyClass;?>">
+	
+	<div class="project_detail_fields">
+		<div class="row_form">
+		<?php $StreamMessageTxt = (isset($_POST['StreamMessage']['txt']))? $_POST['StreamMessage']['txt'] : '';?>
+			<textarea class="alert_if_error" placeholder="Provide general info about your proposal e.g. what you can deliver and when, why you think you can do the job etc." name="StreamMessage[txt]"><?php print $StreamMessageTxt; ?></textarea>
+		</div>
+		<div class="row_form">
+			<label class="pph_item">Item</label><label class="pph_amount">Amount</label>
+		</div>
+		<?php $total_cost = 0.0;?>
+		<?php if(isset($_POST['ProposalDetail']))
+		{
+			foreach($_POST['ProposalDetail'] as $key=>$value)
+			{
+				$total_cost += (float) $value['cost'];
+			?>
+			<div class="row_form detail_inputs">
+				<span class="detail_delete"></span>
+				<input placeholder="enter description" class="detail_txt alert_if_error" name="ProposalDetail[<?php print $key;?>][description]" maxlength="80" type="text" value="<?php print $value['description'];?>">
+				<input class="detail_amt alert_if_error <?php print $this->CurrencyClass;?>" name="ProposalDetail[<?php print $key;?>][cost]" type="text" placeholder="0.00" value="<?php print $value['cost'];?>"> 
+			</div>
+			<?php
+			}
+		}
+		else
+		{?>	
+			<div class="row_form detail_inputs">
+				<span class="detail_delete"></span>
+				<input placeholder="enter description" class="detail_txt alert_if_error" name="ProposalDetail[0][description]" maxlength="80" type="text">
+				<input class="detail_amt alert_if_error <?php print $this->CurrencyClass;?>" name="ProposalDetail[0][cost]" type="text" placeholder="0.00"> 
+			</div>
+		<?php
+		}
+		?>
+	</div>
+	<div class="pph_total_block">
+		<a id="add_new_item">+ add new item</a>
+		<input type="text" class="pph_total <?php print $this->CurrencyClass;?>" disabled="" value="<?php print $total_cost;?>"/><span class="pph_total_title">Total</span>
+	</div>
+	<div class="pph_deposit_block">
+		<input type="text" class="pph_deposit alert_if_error <?php print $this->CurrencyClass;?>" placeholder="0.00" name="pph_deposit"/><span class="pph_deposit_title">Deposit</span>
+	</div>
+	
+	<span class="notify_block">
+		<input type="checkbox" name="pph_notify" value="1">Notify me if the job is awarded to someone else
+	</span>
+	
+	<input type="submit" class="blue_submit search_btn" id="pph_submit" name="pph_submit" value="Send">
+</form>

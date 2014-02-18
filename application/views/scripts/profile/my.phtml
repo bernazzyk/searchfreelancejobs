@@ -1,0 +1,358 @@
+﻿	<script type="text/javascript">
+	/*$(document).ready(function() {	
+		$("a#single_btn").fancybox();
+	});*/
+	
+	$(document).ready(function() {
+	$(".fancybox").fancybox({
+		openEffect	: 'none',
+		closeEffect	: 'none'
+	});
+
+	$('#btnopen').click(function(e) {
+   e.preventDefault();
+   $('.fancybox:eq(0)').click();
+});
+});
+    </script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#subscribed_cat').click(function() {
+    $.fancybox({
+		autoSize   : false,
+		'width': 400,
+		'height': 'auto',
+        'type': 'iframe',		 
+        content: $('#subscribe_category').html(),
+    });
+});	
+    }); 
+	function selectAll(bx)
+	{
+		//alert(bx.checked);
+		 var checkboxes = new Array();
+     	checkboxes = document.getElementsByName('category[]');
+     	for (var i = 0; i < checkboxes.length; i++) {
+         if (checkboxes[i].type == 'checkbox') {
+             checkboxes[i].checked = bx.checked;
+         }
+     }
+	 checkValidate();
+
+	}
+	function checkValidate()
+	{
+		var checkboxes = new Array();
+     	checkboxes = document.getElementsByName('category[]');
+     	for (var i = 0; i < checkboxes.length; i++) {
+        if(checkboxes[i].checked) {
+		$('div #error_found').hide();
+             break;
+         }}
+		 
+		 if(i==checkboxes.length)
+		 {
+		 $('div #error_found').show();
+		// alert('Please select at least one category');
+		 return false;
+		 }
+	}
+</script>
+<style type="text/css">
+.catRow
+{
+	margin:5px;
+}
+</style>
+<div style="display: none">
+<div id="subscribe_category" class="subscribe_category">
+<form name="subscribeCategory" id="subscribeCategory" action="/index/subscribecategory" method="post" onsubmit="return checkValidate();">
+<div id="error_found" style="display:none; color:red;">Please select at least one category</div>
+<label class="item_title" style="margin:20px;">Categories</label>
+<div class="catRow">
+<input type="checkbox" name="checkAll" id="checkAll" onchange="selectAll(this);"/><label>All Categories</label>
+</div>
+<?php 
+$uri = Zend_Controller_Front::getInstance()->getRequest()->getRequestUri();
+$subArray = array();
+foreach($this->ActiveCategories as $Category)
+{
+	if($Category['name']!='Others')
+	{
+	foreach($this->subscribeCategories as $subscribe)
+	{
+		$subArray[]= $subscribe['category_id']; 
+	}
+	?>
+<div class="catRow">
+<input type="checkbox" name="category[]" id="category<?php echo $Category['id'];?>" value="<?php echo $Category['id'];?>"  <?php if(in_array($Category['id'],$subArray)) { echo 'checked=checked'; }  ?> onchange="checkValidate();" />
+<label><?php echo $Category['name'];?></label>
+</div>
+<?php 
+} } 
+?>
+<input type="hidden" name="returnback" value="<?php echo $uri; ?>" />
+<input type="submit" name="submit" class="blue_submit search_btn" value="Update">
+</form>
+
+</div>
+</div>
+
+<div id="my_ptc" class="center_block_container" platform_to_connect="<?php print $this->platform_to_connect;?>">
+<?php 
+$append_platform = '';
+
+//print_r($_SESSION['profile']['odesk']);
+
+if(isset($this->message_not_logged)) {
+	print $this->message_not_logged;
+} else {?>
+<div class="maincontainer">
+        <div class="details br_bot">
+            <h2 class="name">
+                 <?php 
+                 
+            if(@$this->freelancerRow['fname']!='' || @$this->$freelancerRow['lname']!='')
+             {
+                   echo $this->freelancerRow['fname'].' '.$this->freelancerRow['lname'];
+                   }
+                   else if(!empty($this->freelancerRow['name']))
+                   {
+                    echo $this->freelancerRow['name'];
+                   }
+                   else
+                   {
+                    echo "N/A";
+                   }
+                   ?>
+            </h2> 
+           
+            <div class="rightimg">
+                <a  <?php if($this->isFeaturedUser==0) { ?> href="/profile/upgrade/"  <?php } ?>>
+               <!--   <img src="/media/image/right_img.png" alt=""/> -->
+                </a>
+            </div>
+            
+             <div class="clear"></div>
+           
+           <!-- <div class="emptyimg">
+                <div class="main_iamge">
+                <?php if($this->freelancerRow['picture']!='') { ?>
+                    <img src="/data/profilePictures/<?php echo $this->freelancerRow['picture'];?>" width="204" height="225" alt="" />
+                   <?php  } else {  ?>
+                     <img src="/media/image/gal_inner.png" alt="" />
+                   <?php } ?>
+                </div>
+            </div>
+            <div class="messageimg">
+                <a href="javascript:void(0)" onclick="sendMessage(<?php echo $this->freelancerRow['account_id'];?>)">
+                <img src="/media/image/message.png" alt="" />
+                </a>
+            </div>
+            <p class="text1">
+                Skills: <?php if($this->freelancerRow['skills']!='') { 
+                   
+                   echo $this->freelancerRow['skills'];
+                   }else
+                   {
+                    echo "N/A";
+                   }
+                   ?>  
+                <br>
+                Industry:IT
+                <br>
+                Description:-
+            </p>
+            <div class="textarea">
+            <p>
+              <?php if($this->freelancerRow['description']!='') { 
+                   
+                   echo $this->freelancerRow['description'];
+                   }else
+                   {
+                    echo "N/A";
+                   }
+                   ?>    
+               
+              
+              </p>
+               <a href="#" class="readmore">
+                Read More
+               </a>
+            </div>-->
+            
+            <div class="profile_sec">
+        <div class="img_sec">
+            <div class="emptyimg">
+            <div class="main_iamge">
+            <?php if($this->freelancerRow['picture']!='') { ?>
+            <img src="/data/profilePictures/<?php echo $this->freelancerRow['picture'];?>" width="204" height="225" alt="" />
+            <?php  } else {  ?>
+             <img src="/media/image/gal_inner.png" alt="" />
+            <?php } ?>
+            </div>
+            </div>
+            <div class="messageimg">
+        <label class="p_item_info_content"><a style="margin-bottom:10px; margin-top:0px;" id="pub_prof_update" href="/profile/create/" class="blue_submit search_btn a_std_btn float_left">UPDATE</a></label>
+      <label class="p_item_info_content"> <a style="margin-bottom:10px;" id="subscribed_cat" class="blue_submit search_btn a_std_btn float_left" href="JavaScript:void();">Subscribed</a></label>
+ 
+            </div>
+        </div>
+        
+        <div class="detail_area">
+           
+            <span>Skills: <?php if($this->freelancerRow['skills']!='') { 
+               
+               echo $this->freelancerRow['skills'];
+               }else
+               {
+                echo "N/A";
+               }
+               ?> 
+               </span> 
+            <span>Industry: <?php if($this->freelancerRow['industry']!='') { 
+               
+               echo $this->freelancerRow['industry'];
+               }else
+               {
+                echo "N/A";
+               }
+               ?> </span>
+            <span>Description:-</span>
+          
+            <div class="textarea">
+            <?php if($this->freelancerRow['description']!='') { 
+               
+               echo $this->freelancerRow['description'];
+               }else
+               {
+                echo "N/A";
+               }
+               ?>    
+            
+            
+          <!--  <a href="#" class="readmore">
+            Read More
+            </a> -->
+            </div>
+        </div>
+        <div class="clear"></div>
+        
+       </div>
+        </div>
+        
+       <div class="portfolio br_bot">
+          <div class="port_head">  
+          </div>
+          
+          <div class="port_links">
+            <h3>Projects:-</h3>
+            <?php if($this->freelancerRow['portfolio']!='') { 
+                   
+                   echo $this->freelancerRow['portfolio'];
+                   }else
+                   {
+                    echo "N/A";
+                   }
+                   ?> 
+            <a href="#" class="view_port">
+              <img src="/media/image/viewall.png" alt="" />
+            </a>
+          </div>
+          
+          <div class="port_gallery">
+           <h3>Image Gallery:-</h3>
+           <?php if(!empty($this->photoRows)) { 
+           foreach($this->photoRows as $photoRows) { ?>
+           
+           
+            <div class="gal_one">
+             <a  class="fancybox" rel="gallery1" id="single_image" href="data/portfolioPhoto/<?php echo $photoRows['photos']; ?>" title="<?php echo $photoRows['title'];  ?>"><img src="data/portfolioPhoto/<?php echo $photoRows['photos']; ?>" width="122" height="102" alt="<?php echo $photoRows['title'];  ?>" /></a>
+            </div>
+        <?php } ?>
+        
+            <!--<a onclick="gallerybtn()" class="view_gal" href="javascript:void()">-->
+            <a id="btnopen"  class="view_gal" href="javascript:void();">
+              <img src="/media/image/viewall.png" alt="" />              
+              </a>
+            
+            
+            <?php } ?>
+          </div>
+
+        </div>
+                
+                <div class="bdy_mid">
+                   <div class="mid_header">
+                     <h2>Additional Information</h2>
+                   </div>
+                   <div class="mid_bdy_detls">
+                   
+                   
+                      <div class="mid_bdy_detls_one">
+                        <div class="detls_one_image">
+                          <img src="/media/image/one.png" alt="" />
+                        </div>
+                        <div class="detls_one_text">
+                          <h2>Work Experience</h2>
+                          <p><?php if($this->freelancerRow['experience']!='') { 
+						   
+						   echo $this->freelancerRow['experience'];
+						   }else
+						   {
+						   	echo "N/A";
+						   }
+						   ?> </p>
+                        </div>
+                      </div>
+                      
+                      
+                      
+                      <div class="mid_bdy_detls_two">
+                         <div class="detls_two_image">
+                          <img src="/media/image/two.png" alt="" />
+                        </div>
+                        <div class="detls_two_text">
+                         <h2>Skills</h2>
+                         <p>
+                         <?php if($this->freelancerRow['skills']!='') { 
+						   
+						   echo $this->freelancerRow['skills'];
+						   }else
+						   {
+						   	echo "N/A";
+						   }
+						   ?>
+                         </p>
+                        </div>
+                      </div>
+                      
+                      
+                      <div class="mid_bdy_detls_three">
+                        <div class="detls_three_image">
+                          <img src="/media/image/three.png" alt="" />
+                        </div>
+                        <div class="detls_three_text">
+                          <h2>Education</h2>
+                          <p>
+                            <?php if($this->freelancerRow['education']!='') { 
+               
+              				 echo $this->freelancerRow['education'];
+               				}else
+              				 {
+               				 echo "N/A";
+							}
+               				?>  
+                             </p>
+                        </div>
+                      </div>
+                      
+                   </div>
+                </div>
+                
+                </div>
+            
+		
+<?php
+}
+?>

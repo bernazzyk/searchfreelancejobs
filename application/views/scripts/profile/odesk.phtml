@@ -1,0 +1,40 @@
+<?php $OdeskAuthSubstitution = array(	'first_name'				=> 'First Name',
+									'last_name'				=> 'Last Name',
+									'uid'			=> 'User Id',
+									'mail'	=> 'Email'
+								//	'timezone'				=> 'Zone'
+								);
+
+?>
+<div class="std_inner_container">
+	<?php //print_r ($this->OdeskProfile); ?>
+		<h3>Odesk Profile <img title="" alt="" src="/media/image/logos/recent_logo_odesk.png"></h3>
+		<div class="elance_profile">
+			
+			<?php foreach($OdeskAuthSubstitution as $key => $Item)
+			{?>
+				<div class="profile_item">
+					<label class="pi_name"><?php print $Item;?></label>
+					<div class="pi_content"><?php print $this->OdeskProfile['auth_user'][$key];?></div>
+				</div>
+			<?php
+			}
+			?>
+			
+			<div class="profile_item">
+				<label class="pi_name">Country</label>
+				<div class="pi_content"><?php print $this->OdeskProfile['info']['location']['country'];?></div>
+			</div>
+			
+			<div class="profile_item">
+				<label class="pi_name">City</label>
+				<div class="pi_content"><?php print $this->OdeskProfile['info']['location']['city'];?></div>
+			</div>
+			
+			<div class="profile_item">
+				<label class="pi_name">Profile Url</label>
+				<div class="pi_content"><a href="<?php print $this->OdeskProfile['info']['profile_url'];?>" target="_blank"><?php print $this->OdeskProfile['info']['profile_url'];?></a></div>
+			</div>
+			
+		</div>
+</div>

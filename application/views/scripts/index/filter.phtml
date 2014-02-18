@@ -1,0 +1,94 @@
+<?php /*$modelFromIndex = new Application_Model_Index();
+$ActiveCategories = $modelFromIndex->getActiveCategories();
+*/
+?>
+<div class="form_filter_container">
+	<form method="post" action="/projects/filter/">
+
+		<?php if(isset($this->ActiveCategories) && $this->ActiveCategories)
+		{
+			foreach($this->ActiveCategories as $Category)
+			{?>
+				<div class="row">
+					<input name="category[<?php print $Category['id'];?>]" id="filter_chk_<?php print $Category['id'];?>" type="checkbox" class="" categ_id="<?php print $Category['id'];?>"/>
+					<label for="filter_chk_<?php print $Category['id'];?>"><?php print $Category['name'];?></label>
+				</div>
+			<?php								
+			}
+		}?>		
+	
+		<!--
+		<div class="form_row">
+			<label class="item_title">Category</label>
+			<select multiple="multiple">
+				<option value="0">All Categories</option>
+				<?php foreach($this->ActiveCategories as $Category)
+				{
+				?>
+					<option value="<?php print $Category['id'];?>"><?php print $Category['name'];?></option>
+				<?php	
+				}
+				?>
+			</select>
+		</div>
+		-->
+		
+		<div class="form_row">
+			<label class="item_title">Keywords</label>
+			<input type="text" name="keywords">
+		</div>	
+	
+		<div class="form_row">
+			<label class="item_title">Platform</label>
+			<?php foreach($this->Platforms as $Platform)
+			{
+			?>
+				<div class="row">
+					<input name="platform[<?php print $Platform['id'];?>]" id="filter_platform_chk<?php print $Platform['id'];?>" type="checkbox" class="" platform_id="<?php print $Platform['id'];?>"/>
+					<label for="filter_platform_chk_<?php print $Platform['id'];?>"><?php print $Platform['name'];?></label>
+				</div>
+			<?php	
+			}
+			?>
+		</div>
+		
+		<div class="form_row">
+			<input type="text" name="price_min">
+			<label>Min</label>
+			<input type="text" name="price_max">
+			<label>Max</label>
+		</div>
+		
+		
+		<br/><INPUT TYPE=RADIO NAME="time_left" VALUE="" CHECKED> Any
+		<br/><INPUT TYPE=RADIO NAME="time_left" VALUE="1"> Less Than 24 hours left
+		<br/><INPUT TYPE=RADIO NAME="time_left" VALUE="3"> Less Than 3 days left
+		<br/><INPUT TYPE=RADIO NAME="time_left" VALUE="7"> Less Than 7 days left
+		
+		<br/><INPUT TYPE=RADIO NAME="posted_date" VALUE="" CHECKED> Any
+		<br/><INPUT TYPE=RADIO NAME="posted_date" VALUE="1"> Less Than 24 hours left
+		<br/><INPUT TYPE=RADIO NAME="posted_date" VALUE="3"> Less Than 3 days left
+		<br/><INPUT TYPE=RADIO NAME="posted_date" VALUE="7"> Less Than 7 days left
+		<br/><INPUT TYPE=RADIO NAME="posted_date" VALUE="between"> Or between
+		<input type="text" name="posted_start">
+		<input type="text" name="posted_end">
+	
+		<!--
+		<div class="form_row">
+			<label class="item_title">Platform</label>
+			<select id="platform_list">
+				<option value="0">Platform</option>
+				<?php foreach($this->Platforms as $Platform)
+				{
+				?>
+					<option value="<?php print $Platform['id'];?>"><?php print $Platform['name'];?></option>
+				<?php	
+				}
+				?>
+			</select>
+		</div>
+		-->
+		<input type="submit">
+		
+	</form>
+</div>

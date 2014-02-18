@@ -1,0 +1,12 @@
+
+<!--    previous Pagelink-->
+<?php if (isset($this->previous)) {?>
+<a class="prev_link" href="<?php echo $this->url(array('page' => $this->previous)); ?>">Previous</a> 
+<?php }  ?>
+
+
+<!--    next Page link-->
+<?php if (isset($this->next)) {?>
+<a class="nxt_link" href="<?php echo $this->url(array('page' => $this->next)); ?>">Next</a> 
+<?php } ?>
+

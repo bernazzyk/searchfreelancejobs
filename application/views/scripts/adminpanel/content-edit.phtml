@@ -1,0 +1,47 @@
+<?php
+
+$this->headScript()->appendFile('/media/wysihtml5/parser_rules/advanced.js')
+    ->appendFile('/media/wysihtml5/dist/wysihtml5-0.3.0.min.js')
+    ->appendFile('/media/wysihtml5/bootstrap-wysihtml5.js');
+
+$this->headLink()->appendStylesheet('/media/wysihtml5/bootstrap-wysihtml5.css');
+
+$this->headTitle('Edit a page')->headTitle('Page Content');
+
+?>
+
+<ul class="breadcrumb">
+  <li><a href="/adminpanel/">Adminpanel</a> <span class="divider">/</span></li>
+  <li><A href="/adminpanel/contents/">Page Content</a> <span class="divider">/</span></li>
+  <li>Edit a page</li>
+</ul>
+
+<?php if ($this->saved): ?>
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        The changes was saved
+    </div>
+<?php endif ?>
+
+<form method="post" action="" class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label" for="content">Page content</label>
+        <div class="controls">
+            <textarea id="wysihtml5" style="width: 90%; height: 500px;" name="content"><?= Application_Model_DbTable_Contents::get($this->id) ?></textarea>
+        </div>
+    </div>
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">
+                <i class="icon-pencil icon-white"></i>
+                Save
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+$(function(){
+    $('#wysihtml5').wysihtml5();
+});
+</script>

@@ -1,0 +1,27 @@
+<?php $this->headTitle('Usesr Accounts') ?>
+
+    <ul class="breadcrumb">
+        <li><a href="/adminpanel/">Adminpanel</a> <span class="divider">/</span></li>
+        <li>User Accounts</li>
+    </ul>
+
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th> # </th>
+            <th> Type </th>
+            <th> Email </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($this->paginator as $user): ?>
+            <tr>
+                <td> <?= (int)$user->fid ?> </td>
+                <td> <?= $this->escape($user->pfr) ?> </td>
+                <td> <?= $this->escape($user->psr) ?> </td>
+            </tr>
+        <?php endforeach ?>
+        </tbody>
+    </table>
+
+<?= $this->paginator ?>

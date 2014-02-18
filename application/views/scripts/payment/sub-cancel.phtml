@@ -1,0 +1,14 @@
+<?php $this->headTitle('Cancel Subscription') ?>
+
+<div id="view-content">
+    <?php if ($this->error): ?>
+        <p>There was an error while trying to cancel your subscription.
+        Please <a href="/contact">contact us</a> so we can cancel your subscription manually. Thank you.</p>
+    <?php else: ?>
+        <form method="post" action="">
+            <p>Are you sure you want to cancel your membership?<br>If yes, your account will become suspended
+            and you will no longer be able to use our portal for browsing and bidding on jobs.</p>
+            <input type="submit" name="confirm" value="Cancel my membership">
+        </form>
+    <?php endif ?>
+</div>

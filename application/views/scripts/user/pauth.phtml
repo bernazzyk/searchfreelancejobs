@@ -1,0 +1,146 @@
+<?php
+if ($this->platformId):
+    switch ($this->platformId):
+        case Application_Model_DbTable_Platforms::FREELANCER_ID:
+            ?>
+            <form id="pauth-form" method="post" action="https://www.freelancer.com/users/login_box.php">
+                <input type="hidden" name="username" value="<?php echo $this->username ?>">
+                <input type="hidden" name="passwd" value="<?= $this->password ?>">
+                <input type="hidden" name="submitted" value="true">
+                <input type="hidden" name="savelogin" value="true">
+            </form>
+            <script type="text/javascript">
+                document.getElementById('pauth-form').submit();
+            </script>
+            <?php
+            break;
+        case Application_Model_DbTable_Platforms::ELANCE_ID:
+            ?>
+            <script type="text/javascript">
+                location.href = 'https://www.elance.com/php/landing/main/login.php';
+            </script>
+            <?php
+            break;
+        case Application_Model_DbTable_Platforms::GURU_ID:
+            ?>
+            <script type="text/javascript">
+                location.href = 'https://www.guru.com/login.aspx';
+            </script>
+            <?php
+            break;
+        case Application_Model_DbTable_Platforms::PEOPLEPERHOUR_ID:
+            ?>
+            <script type="text/javascript">
+                location.href = 'https://www.peopleperhour.com/site/login';
+            </script>
+            <?php
+            break;
+        case Application_Model_DbTable_Platforms::IFREELANCE_ID:
+            ?>
+            <script type="text/javascript">
+                location.href = 'https://www.ifreelance.com/user/login.aspx';
+            </script>
+            <?php
+            break;
+        case Application_Model_DbTable_Platforms::ODESK_ID:
+            ?>
+            <form id="pauth-form" method="post" action="https://www.odesk.com/login">
+                <input type="hidden" name="username" value="<?php echo $this->username ?>">
+                <input type="hidden" name="password" value="<?= $this->password ?>">
+                <input type="hidden" name="remember_me" value="1">
+            </form>
+            <script type="text/javascript">
+                document.getElementById('pauth-form').submit();
+            </script>
+            <?php
+            break;
+        case Application_Model_DbTable_Platforms::GETACODER_ID:
+            ?>
+            <form id="pauth-form" method="post" action="http://www.getacoder.com/users/onlogin.php">
+                <input type="hidden" name="username" value="<?php echo $this->username ?>">
+                <input type="hidden" name="passwd" value="<?= $this->password ?>">
+            </form>
+            <script type="text/javascript">
+                document.getElementById('pauth-form').submit();
+            </script>
+            <?php
+            break;
+        case Application_Model_DbTable_Platforms::FREELANCESWITCH_ID:
+            ?>
+            <form id="pauth-form" method="post" action="http://jobs.freelanceswitch.com/session">
+                <input type="hidden" name="login" value="<?php echo $this->username ?>">
+                <input type="hidden" name="password" value="<?= $this->password ?>">
+                <input type="hidden" name="remember_me" value="1">
+                <input type="hidden" name="commit" value="Log In">
+            </form>
+            <script type="text/javascript">
+                if (parent.document.getElementById('sent').value > 0) {
+                    parent.document.getElementById('sent').value = '0';
+                } else {
+                    parent.document.getElementById('sent').value = '1';
+                    document.getElementById('pauth-form').submit();
+                }
+            </script>
+            <?php
+            break;
+        case Application_Model_DbTable_Platforms::FREELANCE_ID:
+            ?>
+            <form id="pauth-form" method="post" action="https://secure.freelance.com/j_acegi_security_check">
+                <input type="hidden" name="j_username" value="<?php echo $this->username ?>">
+                <input type="hidden" name="j_password" value="<?= $this->password ?>">
+                <input type="hidden" name="j_role" value="Freelancer">
+            </form>
+            <script type="text/javascript">
+                document.getElementById('pauth-form').submit();
+            </script>
+            <?php
+            break;
+    endswitch;
+else:
+    ?>
+    <script type="text/javascript" src="/media/js/global/jquery/js/jquery-1.7.2.min.js"></script>
+    <style type="text/css">
+        #authFrame {
+            border: 1px solid #C2C2C2;
+            height: 80%;
+            left: 50%;
+            position: relative;
+            margin-left: -500px;
+            width: 1000px;
+            background: #fff;
+        }
+    </style>
+    <div id="header_center">
+        <div id="header_center_inner">
+            <img src="/media/image/new-logo.png" class="free_fm_header">
+            <div class="ptc_registered">
+                <?php /*<a href="<?= $this->nextUrl ?>">Click here to continue authentication process</a>*/ ?>
+                Please wait until the authentication process is completed
+            </div>
+        </div>
+    </div>
+    <input id="sent" name="sent" type="hidden" value="0">
+    <iframe id="authFrame" src="/user/pauth/p/<?php echo $this->currentPlatformId ?>"></iframe>
+    <script type="text/javascript">
+        $('#authFrame').load(function() {
+            <?php
+            switch ($this->currentPlatformId):
+                case Application_Model_DbTable_Platforms::FREELANCER_ID:
+                    // break was intentionally omitted
+                case Application_Model_DbTable_Platforms::GETACODER_ID:
+                    // break was intentionally omitted
+                case Application_Model_DbTable_Platforms::FREELANCESWITCH_ID:
+                    // break was intentionally omitted
+                case Application_Model_DbTable_Platforms::FREELANCE_ID:
+                    // break was intentionally omitted
+                case Application_Model_DbTable_Platforms::ODESK_ID:
+                    ?>
+                    location.href = '<?= $this->nextUrl ?>';
+                    <?php
+                    break;
+            endswitch;
+            ?>
+        });
+    </script>
+    <?php
+endif;

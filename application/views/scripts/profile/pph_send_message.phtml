@@ -1,0 +1,18 @@
+<form action="" method="POST">
+
+	<div class="pph_form_row">
+		<span class="pph_mess_">Message</span>
+		<?php $txt = (isset($_POST['StreamMessage']['txt']))? $_POST['StreamMessage']['txt'] : '';?>
+		<textarea name="StreamMessage[txt]"><?php print $txt; ?></textarea>
+	</div>
+	<div class="pph_form_row">
+		<?php $checked = (isset($_POST['StreamMessage']['ackPolicy']))? 'checked' : '';?>
+		<input type="checkbox" name="StreamMessage[ackPolicy]" <?php print $checked;?>>
+		<span class="">I acknowledge that all billing regarding this Job (including follow on work) has to be conducted through PPH in order to comply with <a class="back_to_mess" href="http://www.peopleperhour.com/static/terms/trust-and-safety" target="_blank">peopleperhour policy</a></span>
+	</div>
+	<input type="hidden" name="StreamMessage[publish]" value="0">
+	
+	
+	<input class="blue_submit search_btn" type="submit" name="pph_send_mess_submit" value="send"/>
+</form>
+<a class="back_to_mess" href="/profile/peopleperhourinfo/faction/messages/">Back to messages</a>

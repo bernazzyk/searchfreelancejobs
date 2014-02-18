@@ -1,0 +1,117 @@
+<div id="extended_box">
+	<span id="ext_title"><?php print $this->Project['title'];?></span>
+	<span id="ext_new"><img src="/media/image/elements/new_arrow.png" alt="" title=""></span><br>
+	<span id="ext_operator_logo"><img src="/media/image/logos/<?php print $this->Project['logo'];?>" alt="" title=""></span>
+	<p id="ext_description_title">Description</p>
+	<p id="ext_description_text"><?php echo str_replace("<p>","",str_replace("</p>","",nl2br($this->Project['description']))) ?></p>
+	<?php if(isset($this->ProjectTags[0]))
+	{
+	?>
+	<div id="ext_tags_row">
+		<span id="ext_tags_title">Tags:</span>
+		<?php foreach($this->ProjectTags as $Tag)
+		{?>
+			<a href="/projects/index/tag/<?php print mb_strtolower($Tag['name'], 'UTF-8'); $Tag['tag_id'];?>" class="ext_tags_item"><?php print $Tag['name'];?></a>
+		<?php
+		}?>
+	</div>
+	<?php
+	}
+	?>
+	<?php if(isset($this->ProjectFiles))
+	{?>
+		<div id="ext_attached_files">
+		<span id="ext_attached_title">Attached Files</span>
+		<ul class="attached_list">
+		<?php
+		foreach($this->ProjectFiles as $File)
+		{
+			$file_name = ($File['file_name']!='')? mb_substr( $File['file_name'] , 0, 25, 'UTF-8' ) : 'File'; 
+			?>
+			<li><a href="<?php print $File['file_url'];?>" target="_blank"><?php print $file_name;?></a></li> 
+			<?php
+		}
+		?>
+		</ul>
+		</div>
+	<?php
+	}
+	?>
+	<div id="ext_bottom_box">
+	
+		<div id="ext_bottom_left">
+			<div class="ext_bottom_row">
+				<span class="title_name">Posted:</span>
+				<span id="ext_bott_posted_value" class="value"><?= isset($this->Project['date_posted']) ? $this->Project['date_posted'] : $this->date_posted ?></span>
+			</div>
+			
+			<div class="ext_bottom_row">
+				<span class="title_name">Time Left:</span>
+				<span id="ext_bott_time_left" class="value"><?= isset($this->Project['time_left']) ? $this->Project['time_left'] : $this->time_left ?></span>
+			</div>
+		</div>
+		
+		<?php 
+		$jobTypes = array(1 => 'Hourly', 2 => 'Fixed', 3 => 'N/A', 4 => 'Monthly');
+		$JobTypePrice = $jobTypes[$this->Project['jobtype']];
+		//$JobTypePrice = ($this->Project['jobtype']==1)? 'Hourly' : 'Fixed';?>
+		
+		<div id="ext_bottom_middle">
+			<div class="ext_bottom_row">
+				<span class="title_name"><?php print $JobTypePrice;?> Price Job</span>
+			</div>
+			
+			<div class="ext_bottom_row">
+				<span class="title_name">Bids:</span>
+				<span id="ext_bott_bids_value" class="value"><?php print $this->Project['bids'];?></span>
+			</div>
+			
+			<div class="ext_bottom_row">
+				<span class="title_name">Average:</span>
+				<span id="ext_bott_average" class="value"><?php print (int)$this->Project['bids_avg'] . $this->CurrenciesArray[$this->Project['budget_currency']];?></span>
+			</div>
+		</div>
+		
+		<div id="ext_bottom_right">
+			<p>Budget:&nbsp;<span id="ext_bott_budget"> 
+            <?php
+            if ((float)$this->Project['budget_low']):
+                echo $this->CurrenciesArray[$this->Project['budget_currency']] . number_format($this->Project['budget_low']);
+                echo $this->Project['budget_high'] > $this->Project['budget_low'] ? '&ndash;' . number_format($this->Project['budget_high']) : '';
+                switch ($this->Project['jobtype']):
+                    case 1:
+                        echo '/hr';
+                        break;
+                    case 4:
+                        echo '/month';
+                        break;
+                endswitch;
+            else:
+                echo 'N/A';
+            endif;
+            ?>
+			</span></p>
+            <?php
+            if (!isset($this->no_apply_button)):
+                if ($this->isNewTab):
+                    if ($this->userId):
+                        ?>
+                        <a href="<?php echo $this->projectRow->getBidUrl() ?>" target="_blank" id="btn_apply" onclick="trDisabled = true;"></a>
+                        <?php
+                    else:
+                        ?>
+                        <a href="/registration" id="btn_apply" onclick="trDisabled = true;"></a>
+                        <?php
+                    endif;
+                else:
+                    ?>
+                    <a href="/proposal/index/projectid/<?php echo $this->Project['id'] ?>?back=<?= $this->backUrl ?>" id="btn_apply" onclick="trDisabled = true;"></a>
+                    <?php
+                endif;
+            endif;
+            ?>
+		</div>
+		
+		<div class="clear"></div>
+	</div>
+</div>

@@ -1,0 +1,93 @@
+			<div id="content_bottom_right_box">			
+				<div class="double_border"></div>        
+				<div class="content_bottom_right_box_item">
+                
+                	<div class="content_bottom_right_box_item_inner">
+                    
+					<form method="post" action="/projects/filter/">
+					
+                    	<div class="title">
+                        
+                        	<p>Search</p>
+                        
+                        </div>
+                        
+						<div class="content">
+						
+							<div class="search_block">
+								
+								<!--
+								<div class="row">
+									<input id="chk_001" type="checkbox" />
+									<label for="chk_001">All Categories</label>
+								</div>
+								-->
+								
+								<?php if(isset($this->ActiveCategories) && $this->ActiveCategories)
+								{
+									foreach($this->ActiveCategories as $Category)
+									{?>
+										<div class="row">
+											<input name="category[<?php print $Category['id'];?>]" id="filter_chk_<?php print $Category['id'];?>" type="checkbox" class="" categ_id="<?php print $Category['id'];?>"/>
+											<label for="filter_chk_<?php print $Category['id'];?>"><?php print $Category['name'];?></label>
+										</div>
+									<?php								
+									}
+								}?>
+							   
+								<!--
+								<div class="row">
+									<input id="chk_011" type="checkbox" />
+									<label for="chk_011">Others</label>
+								</div>
+								-->
+
+							</div>
+							
+							<div class="search_block">
+													
+								<div class="row">
+									<input id="chk_012" type="checkbox" checked="checked" />
+									<label for="chk_012">Hourly</label>
+								</div>
+								
+								<div class="row">
+									<div id="slider_1" class="slider_box"></div>
+									<div id="rate_range">
+										<span>Min:&nbsp;</span><div id="slider_1_result_1">15</div><span>$/hr</span><span class="marginated">Max:&nbsp;</span><div id="slider_1_result_2">35</div><span>$/hr</span>
+										<input type="hidden" id="hidden_1_1" name="price_min" value="15"/>
+										<input type="hidden" id="hidden_1_2" name="price_max" value="35"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+								<br />
+									
+								<div class="row">
+									<input id="chk_013" type="checkbox" checked="checked" />
+									<label for="chk_013">Fixed</label>
+								</div>
+								
+								<div class="row">
+									<div id="slider_2" class="slider_box"></div>
+									<div id="rate_range">
+										<span>Min:&nbsp;</span><div id="slider_2_result_1">1500</div><span>$</span><span class="marginated">Max:&nbsp;</span><div id="slider_2_result_2">3500</div><span>$</span>
+										<input type="hidden" id="hidden_2_1" name="price_min_fixed" value="1500"/>
+										<input type="hidden" id="hidden_2_2" name="price_max_fixed" value="3500"/>
+									</div>
+									<div class="clear"></div>
+								</div>
+								
+							</div>
+							
+							<div class="align_center">
+								<input type="submit" class="blue_submit search_btn" value="Search"/>
+							</div>
+							
+						</div>
+                    
+					</form>
+                    </div><!--right_box_item_inner-->
+                
+                </div><!--right_box_item-->
+			</div>

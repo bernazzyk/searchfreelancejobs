@@ -1,0 +1,127 @@
+<?php
+
+class AdminpanelController extends Zend_Controller_Action
+{
+    
+    const USERS_PAGE_LIMIT = 20;
+    
+    public function init()
+    {
+        $auth = Zend_Auth::getInstance();
+        
+        $authStorage = $auth->getStorage();
+        
+        $userId = (int)$authStorage->read();
+        
+        if (!$userId) {
+            
+            throw new Zend_Controller_Action_Exception('not logged in');
+            
+        }
+        
+        $accountModel = new Application_Model_DbTable_Accounts();
+        
+        $account = $accountModel->find($userId)->current();
+        if (null === $account) {
+            throw new Zend_Controller_Action_Exception('Wrong parameters');
+        }
+        
+        if ('admin' != $account->type) {
+            throw new Zend_Controller_Action_Exception('Wrong user');
+        }
+        
+        $this->_helper->layout->setLayout('adminpanel');
+        
+        $this->view->headTitle()->exchangeArray(array());
+        $this->view->headTitle()->setSeparator(' — ');
+    } 
+    
+    public function indexAction()
+    {
+        $this->view->activeTab = 'home';
+    }
+    
+    public function usersAction()
+    {
+        $accountModel = new Application_Model_DbTable_Accounts();
+        
+        $paginator = Zend_Paginator::factory($accountModel->select());
+        $paginator->setCurrentPageNumber((int)$this->_getParam('page'))
+            ->setItemCountPerPage(self::USERS_PAGE_LIMIT);
+        
+        $this->view->paginator = $paginator;
+        $this->view->activeTab = 'users';
+    }
+    
+    public function userEditAction()
+    {
+        $id = (int)$this->_getParam('id');
+        if (!$id) {
+            throw new Zend_Controller_Action_Exception('Empty user ID', 404);
+        }
+        
+        $accountModel = new Application_Model_DbTable_Accounts();
+        $account = $accountModel->find($id)->current();
+        if (null === $account) {
+            throw new Zend_Controller_Aciton_Exception("User '{$id}' was not found", 404);
+        }
+        
+        $request = $this->getRequest();
+        $form = new Application_Model_AccountForm();
+        
+        if ($request->isPost() && $form->isValid($request->getPost())) {
+            $account->setFromArray($form->getValues());
+            $account->save();
+            
+            $this->view->saved = true;
+        } else {
+            $form->populate($account->toArray());
+        }
+        
+        $this->view->form = $form;
+        $this->view->activeTab = 'users';
+    }
+    
+    public function userDeleteAction()
+    {
+        $id = (int)$this->_getParam('id');
+        if (!$id) {
+            throw new Zend_Controller_Action_Exception('Empty user ID', 404);
+        }
+        
+        $accountModel = new Application_Model_DbTable_Accounts();
+        $account = $accountModel->find($id)->current();
+        if (null === $account) {
+            throw new Zend_Controller_Aciton_Exception("User '{$id}' was not found", 404);
+        }
+        
+        $account->delete();
+        
+        $this->_redirect('/adminpanel/users');
+    }
+    
+    public function contentsAction()
+    {
+        $contentModel = Application_Model_DbTable_Contents::getInstance();
+        
+        $this->view->contents = $contentModel->fetchAll(null, 'page');
+        $this->view->activeTab = 'contents';
+    }
+    
+    public function contentEditAction()
+    {
+        $id = (int)$this->_getParam('id');
+        if (!$id) {
+            throw new Zend_Controller_Action_Exception('Empty user ID', 404);
+        }
+        
+        if ($content = trim($this->_getParam('content'))) {
+            Application_Model_DbTable_Contents::set($id, $content);
+            
+            $this->view->saved = true;
+        }
+        
+        $this->view->id = $id;
+    }
+    
+}

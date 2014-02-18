@@ -1,0 +1,2 @@
+#place this in /system/.htaccess as you had before
+deny from all

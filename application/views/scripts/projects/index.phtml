@@ -1,0 +1,30 @@
+<?php if(!empty($this->projectId)) { ?>
+<script type="text/javascript">
+$(document).ready(function(){
+$('#project_<?php echo $this->projectId;?>').hide();
+$('#project_detailed_<?php echo $this->projectId;?>').show();
+$('#project_detailed_<?php echo $this->projectId;?>').click(function(){
+$('#project_<?php echo $this->projectId;?>').show();
+$('#project_detailed_<?php echo $this->projectId;?>').hide();
+});
+$('#project_<?php echo $this->projectId;?>').click(function(){
+$('#project_<?php echo $this->projectId;?>').hide();
+$('#project_detailed_<?php echo $this->projectId;?>').show();
+});
+});
+</script>
+<?php
+}
+if(isset($this->message))
+{
+	print $this->message;
+}
+print $this->form;
+
+?>
+
+<div class="projects_block_container">
+    <?php print $this->ProjectsListTable;?>
+</div>
+
+<?php print $this->BlockOfAdvancedSearch;?>

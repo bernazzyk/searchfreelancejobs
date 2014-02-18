@@ -1,0 +1,24 @@
+<?php
+
+$this->headLink()->appendStylesheet('/media/css/global/zendform.css');
+
+?>
+
+<div id="view-content">
+    <p>Your account is pending. Please wait a few minutes for your account to become active so you can begin applying to jobs.</p>
+    <?php if (false && $this->sendForm): ?>
+        <?= $this->sendForm ?>
+    <?php elseif (false) : ?>
+        <p>Thank you for trying out Freelancer.fm.</p>
+        <p>To continue bidding, you must upgrade your account to premium. Premium members can bid unlimited number of times, increasing their chances of winning more jobs!</p>
+        
+        <h2>Just for $19.95/mo</h2>
+        
+        <?php /*<h1>Enter your billing information</h1>
+        <?= $this->form ?>*/ ?>
+        
+        <form method="post" action="">
+            <input type="submit" class="a_start_now_btn" value="Pay by <?= $this->account->paytype == 'cc' ? 'Credit Card' : 'PayPal' ?>">
+        </form>
+    <?php endif ?>
+</div>

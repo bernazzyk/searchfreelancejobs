@@ -1,0 +1,90 @@
+﻿<div class="projects_block_container_inner" id="proects_container" categories="<?php print $this->categories;?>">
+    <div class="title">
+        <p><?php echo (isset($this->ProjectBlockTitle) && $this->ProjectBlockTitle) ? $this->ProjectBlockTitle : 'Recent Projects' ?> :</p>
+    </div>
+    <table class="tab_project_list" id="recent" page="<?php echo Zend_Controller_Front::getInstance()->getRequest()->getControllerName() ?>">
+        <thead valign="bottom">
+            <th class="cell_1">Project Title</th>
+            <th class="cell_3">Budget</th>
+            <th class="cell_4">Bids</th>
+            <th class="cell_5">Website</th>
+        </thead>
+        <tbody>
+            <?php 
+            $proj_proccessed = 0;
+            foreach ($this->ProjectsList as $Project) {
+                $proj_proccessed++;
+                $tr_class = $proj_proccessed % 2 == 0 ? 'even' : '';
+                ?>
+                <tr id="project_<?= $Project['id'] ?>" class="<?php echo $tr_class ?>" url="<?php echo $Project['url']  ?>" prjid="<?php echo $Project['id'] ?>" onclick="">
+                    <td class="cell_1"><a href="/projects/detail/project/<?= $Project['url'] ?>" onclick="return false;"><?php print $Project['title'];?></a></td>
+                    <td>
+                        <?php
+                        if ((float)$Project['budget_low']):
+                            echo $this->CurrenciesArray[$Project['budget_currency']] . number_format($Project['budget_low']);
+                            echo $Project['budget_high'] > $Project['budget_low'] ? '&ndash;' . number_format($Project['budget_high']) : '';
+                            switch ($Project['jobtype']):
+                                case 1:
+                                    echo '/hr';
+                                    break;
+                                case 4:
+                                    echo '/month';
+                                    break;
+                            endswitch;
+                        else:
+                            echo 'N/A';
+                        endif;
+                        ?>
+                    </td>
+                    <td><?php print $Project['bids'];?></td>
+                    <!--<td><?php print $Project['platform_name'];?></td>-->
+                    <td><img src="/media/image/logos/<?php print $Project['logo'];?>" title="<?php print $Project['platform_name'];?>" alt="<?php print $Project['platform_name'];?>" /></td>
+                </tr>
+                <tr id="project_detailed_<?= $Project['id'] ?>" style="display: none;">
+                    <td colspan="4">
+                        <?php
+                        echo $this->partial('index/ajaxdetailed.phtml', array(
+                            'Project' => $Project,
+                            'ProjectFiles' => isset($Project[$Project['id']]) ? $Project[$Project['id']] : null,
+                            'CurrenciesArray' => $this->CurrenciesArray,
+                            'backUrl' => urlencode($_SERVER['REQUEST_URI']),
+                            'isNewTab' => $this->isNewTab,
+                            'projectRow' => $this->projectRows[$Project['id']],
+                            'userId' => $this->userId
+                        ));
+                        ?>
+                    </td>
+                </tr>
+                <?php
+            }
+            ?>
+        </tbody>
+    </table>
+    <div id="showing_box">	
+        <?php
+        $end = (int)$this->From + (int)$this->PerPage; 
+        $limit_index = ($end <(int)$this->NrOfProjects)? $end : (int)$this->NrOfProjects; 
+        
+        if ((int)$limit_index > 0) {
+            ?>
+            <p>Showing&nbsp;<span id="show_from"><?php
+            print (int)$this->From + 1;?></span>&nbsp;to&nbsp;<span id="show_to"><?php
+            print $limit_index;?></span>&nbsp;of&nbsp;<span id="show_of"><?php
+            print $this->NrOfProjects;?></span></p>
+            <?php
+        } else {
+            ?>
+            <p>No results for this search</p>
+            <?php
+        }
+        ?>
+    </div>
+</div>
+
+<?php if (isset($this->Pager) && $this->Pager): ?>
+    <div class="pagination">
+        <div class="pagination_insider">
+            <?php print $this->Pager; ?>
+        </div>
+    </div>
+<?php endif ?>

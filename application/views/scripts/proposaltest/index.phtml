@@ -1,0 +1,70 @@
+<div id="content_bottom">
+	<div id="content_bottom_inner" class="proposal_page_center">
+		<?php if(isset($_SESSION['proposal_http_refferer']))
+		{
+		?>
+			<a class="return_to_search" href="<?php print $_SESSION['proposal_http_refferer'];?>">Return to Search Results</a>
+		<?php
+		}
+		?>
+		<div class="center_block_container">
+			<div class="proposal_form_container ">
+	
+<?php
+if(isset($this->message))
+{?>
+	<div class="message_alert">
+	<?php print $this->message;?>
+	</div> 
+<?php
+}
+if(isset($this->mess_error) && !isset($this->message))
+{
+	print $this->mess_error;
+}
+else
+{
+	print $this->form;
+}
+if(isset($this->form_mess))
+{
+	print '<br><br>';
+	if(isset($this->send_mess_info))
+	{
+		print $this->send_mess_info;
+	}
+	print $this->form_mess;
+}
+?>
+<?php
+				if(isset($this->FSendMessage) && $this->FSendMessage)
+				{
+					?>
+					<div class="f_send_message">
+						<?php
+						if(isset($this->FSendMessageStatute))
+						{
+							print $this->FSendMessageStatute;
+						}
+						?>
+						<span class="f_private_mess">Send a private message</span>
+						<form action="" method="POST">
+							<textarea name="f_send_mess_txt"></textarea>
+							<input type="submit" class="blue_submit search_btn" name="f_send_mess" value="Send"/>
+						</form>
+					</div>
+					<?php
+				}
+?>
+			</div>
+		</div>
+		
+		<div id="content_bottom_right_box">
+			<div class="project_resume">
+			
+			<?php print $this->ProjectDetailBlock;?>
+			
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,31 @@
+<?php
+
+$this->headLink()->appendStylesheet('/media/css/global/zendform.css');
+$this->headTitle('Contact Us');
+
+?>
+
+<?php $this->headStyle()->captureStart() ?>
+    #message {
+        width: 370px;
+        height: 200px;
+    }
+<?php $this->headStyle()->captureEnd() ?>
+
+<div id="view-content">
+    <h1>Contact Us</h1>
+    <div style="float: left; width: 300px;">
+        <p><strong>Yestoapps LLC</strong><br>
+        2215 Ocean Ave STE 1F,<br>
+        Brooklyn, NY 11229<br>
+        Toll Free: 877.718.9073<br>
+        Email: <a href="support@searchfreelancejobs.com">support@searchfreelancejobs.com</a></p>
+    </div>
+    <div style="float: left;">
+        <?php if ($this->sent): ?>
+            <p>The message was sent. You will get our response shortly.</p>
+        <?php else: ?>
+            <?= $this->form ?>
+        <?php endif ?>
+    </div>
+</div>

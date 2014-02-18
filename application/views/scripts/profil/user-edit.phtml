@@ -1,0 +1,16 @@
+<?php $this->headTitle('Edit an User')->headTitle('User Accounts') ?>
+
+<ul class="breadcrumb">
+  <li><a href="/adminpanel/">Adminpanel</a> <span class="divider">/</span></li>
+  <li><A href="/adminpanel/users/">User Accounts</a> <span class="divider">/</span></li>
+  <li>Edit an user</li>
+</ul>
+
+<?php if ($this->saved): ?>
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        The changes was saved
+    </div>
+<?php endif ?>
+
+<?= $this->form ?>

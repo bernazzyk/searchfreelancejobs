@@ -1,0 +1,32 @@
+<form id="elance_form" method="POST" action="">
+	
+	<div class="project_detail_fields">
+		<div class="row_form">
+		<label class="label_info">Describe Your Proposal</label>
+		
+		<?php $bidDesc = (isset($_POST['bidDesc']))? $_POST['bidDesc'] : '';?>
+			<textarea class="alert_if_error full_tarea"  name="bidDesc"><?php print $bidDesc; ?></textarea>
+		</div>
+		
+		<div class="row_form">
+		<label class="label_info">Amount /hour (including Elance Fee)</label>
+		<?php $hourlyRate = (isset($_POST['hourlyRate']))? $_POST['hourlyRate'] : '';?>
+			<input type="text" class="alert_if_error"  name="hourlyRate" value="<?php print $hourlyRate; ?>" />
+		</div>
+		
+		<div class="row_form">
+		<label class="label_info">Estimated Duration (weeks)</label>
+		<?php $duration = (isset($_POST['duration']))? $_POST['duration'] : '';?>
+			<input type="text" class="alert_if_error"  name="duration" value="<?php print $duration; ?>" />
+		</div>
+		
+		<div class="row_form">
+		<label class="label_info">Hours (/week)</label>
+		<?php $hours = (isset($_POST['hours']))? $_POST['hours'] : '';?>
+			<input type="text" class="alert_if_error"  name="hours" value="<?php print $hours; ?>" />
+		</div>
+		
+	</div>
+		
+	<input type="submit" class="blue_submit search_btn" id="elance_submit" name="elance_submit" value="Send">
+</form>

@@ -1,0 +1,193 @@
+<?php
+
+$this->headLink()->appendStylesheet('/media/css/global/zendform.css');
+
+?>
+
+<?php $this->headStyle()->captureStart() ?>
+    #view-content .zend_form input,
+    #view-content .zend_form textarea,
+    #view-content .zend_form select#cctype {
+        width: 300px;
+    }
+	#view-content,
+	#view-content .zend_form {
+		font-family: HelveticaNeue, Arial, sans-serif;
+		font-size: 14px;
+	}
+	#view-content {
+		float: none;
+	}
+	.legals {
+		text-align: center;
+		width: 550px;
+		margin: 0 auto;
+	}
+	#view-content .legals p {
+		margin-left: 193px;
+		margin-right: 102px;
+		text-align: left;
+		font-size: 0.875em;
+		margin-top: 0;
+	}
+	#view-content .billing-header {
+		width: 550px;
+		margin: 0 auto;
+		padding: 10px 0;
+	}
+	#view-content .billing-header h2 {
+		margin-bottom: 0;
+		text-align: center;
+	}
+	#view-content .billing-header p {
+		font-size: 0.875em;
+		margin-top: 6px;
+	}
+	#view-content .billing-form {
+		background: #f0f0f0;
+		width: 550px;
+		margin: 0 auto;
+		padding: 20px;
+	}
+	#view-content .billing-form h3 {
+		text-align: center;
+		margin-bottom: 10px;
+		color: #555;
+		font-weight: bold;
+	}
+	#view-content .billing-form #submit {
+		background: #94c723; /* Old browsers */
+		background: -moz-linear-gradient(top,  #94c723 0%, #6cb119 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#94c723), color-stop(100%,#6cb119)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(top,  #94c723 0%,#6cb119 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(top,  #94c723 0%,#6cb119 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(top,  #94c723 0%,#6cb119 100%); /* IE10+ */
+		background: linear-gradient(to bottom,  #94c723 0%,#6cb119 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#94c723', endColorstr='#6cb119',GradientType=0 ); /* IE6-9 */
+		border: none;
+		border-top: 1px solid #a1d61a;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		color: #FFFFFF;
+		font-size: 18px;
+		line-height: 40px;
+		padding: 0 70px;
+		font-weight: bold;
+		font-family: Arial, sans-serif;
+	}
+	#view-content h2 em {
+		font-style: normal;
+		color: #0e7aaf;
+	}
+	#view-content .zend_form dt label {
+		display: block;
+		padding: 3px 0;
+	}
+	#view-content .zend_form input[type=text] {
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+		border: 1px solid #aaa;
+		padding: 3px 4px;
+		font-size: 14px;
+	}
+    #view-content .zend_form label input {
+        width: 30px;
+    }
+
+    #view-content .zend_form dd#ccexpmonth-element {
+        width: auto;
+    }
+    #view-content .zend_form dd#ccexpyear-element {
+        width: auto;
+    }
+	#header_bottom {
+		display: none;
+	}
+	
+	span.error {
+	    color: red;
+	}
+<?php $this->headStyle()->captureEnd() ?>
+
+<?php $this->headScript()->captureStart() ?>
+    function formShow(element)
+    {
+        element.each(function(){
+            var id = $(this).attr('id');
+            $('#' + id + '-label').show();
+            $('#' + id + '-element').show();
+        });
+    }
+    
+    function formHide(element)
+    {
+        element.each(function(){
+            var id = $(this).attr('id');
+            $('#' + id + '-label').hide();
+            $('#' + id + '-element').hide();
+        });
+    }
+    
+    $(function() {
+        if ($('#paytype-element input:checked').val() == 'paypal') {
+            $('#submit').click();
+            //formShow($('.paypal-field'));
+            $('#submit').hide();
+            formHide($('.cc-field'));
+        } else {
+            formHide($('.paypal-field'));
+            formShow($('.cc-field'));
+        }
+        
+        $('#paytype-element input').click(function(){
+            if ($('#paytype-element input:checked').val() == 'paypal') {
+                $('#submit').click();
+                //formShow($('.paypal-field'));
+                $('#submit').hide();
+                formHide($('.cc-field'));
+            } else {
+                formHide($('.paypal-field'));
+                formShow($('.cc-field'));
+            }
+        });
+    });
+<?php $this->headScript()->captureEnd() ?>
+
+<div id="view-content">
+    <?php if ($this->sendForm): ?>
+        <?= $this->sendForm ?>
+    <?php else: ?>
+        <div class="billing-header">
+            <?php if ($this->account->free_trial): ?>
+                <h2>Your free trial is over :(</h2>
+                <p>Hope you loved the test drive and join the thousands of freelancers using this platform!
+                To continue bidding on thousands of available projects everyday, enter your billing
+                information below. We'll charge $10/month for continued use of SearchFreelanceJobs.com. As always, happy bidding!</p>
+            <?php elseif ($this->account->suspended_at): ?>
+                <h2>Continue using SearchFreelanceJobs.com</h2>
+                <p>Unfortunately, your account has been suspended due to a payment error in your account.
+                To lift the suspension and continue using our service, please update your billing information.</p>
+            <?php else: ?>
+                <h2>Try SearchFreelanceJobs.com</h2>
+                <p>Browse and bid on thousands of available projects everyday. There are no limitations to using
+                our services. $10/month after trial ends. Cancel anytime - no obilgations.</p>
+            <?php endif ?>
+        </div>
+        <div class="billing-form">
+            <?php if ($this->ccError): ?>
+                <span class="error">There is an error during processing your card.<br>Check the credit card number one more time, please.</span>
+                <br><br>
+            <?php endif ?>
+            
+            <h3>Enter your billing information</h3>
+            
+            <?= $this->form ?>
+            <div class="legals"><p>By clicking submit, you agree to our
+            <a href="/termsconditions" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a>.</p></div>
+            <div style="clear:both"></div>
+            <span id="siteseal"><script type="text/javascript" src="https://seal.godaddy.com/getSeal?sealID=phG5eL00UZBg28PREz830XvEOE4g74yvjhcVfLFjfhPoJNzzg6F6oYnhRyZR"></script></span>
+        </div>
+    <?php endif ?>
+</div>

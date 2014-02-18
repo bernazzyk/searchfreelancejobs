@@ -1,0 +1,62 @@
+﻿<script type="text/javascript">
+	function selectAll(bx)
+	{
+		//alert(bx.checked);
+		 var checkboxes = new Array();
+     	checkboxes = document.getElementsByName('category[]');
+     	for (var i = 0; i < checkboxes.length; i++) {
+         if (checkboxes[i].type == 'checkbox') {
+             checkboxes[i].checked = bx.checked;
+         }
+     }
+	}
+	function checkValidate()
+	{
+		var checkboxes = new Array();
+     	checkboxes = document.getElementsByName('category[]');
+     	for (var i = 0; i < checkboxes.length; i++) {
+        if(checkboxes[i].checked) {
+             break;
+         }}
+		 if(i==checkboxes.length)
+		 {
+		 alert('Please select at least one category');
+		 return false;
+		 }
+	}
+</script>
+<?php 
+if(isset($this->message_not_logged)) {
+	print $this->message_not_logged;
+} else {
+		?>
+        <div id="subscribe_category" class="subscribe_category" style="margin-left:100px;">
+<form name="subscribeCategory" id="subscribeCategory" action="/index/subscribecategory" method="post" onsubmit="return checkValidate();">
+<label class="item_title" style="margin:20px;">Categories</label>
+<div class="catRow">
+<input type="checkbox" name="checkAll" id="checkAll" onchange="selectAll(this);"/><label>All Categories</label>
+</div>
+<?php 
+$subArray = array();
+foreach($this->ActiveCategories as $Category)
+{
+	if($Category['name']!='Others')
+	{
+	foreach($this->subscribeCategories as $subscribe)
+	{
+		$subArray[]= $subscribe['category_id']; 
+	}
+	?>
+<div class="catRow">
+<input type="checkbox" name="category[]" id="category<?php echo $Category['id'];?>" value="<?php echo $Category['id'];?>"  <?php if(in_array($Category['id'],$subArray)) { echo 'checked=checked'; }  ?> />
+<label><?php echo $Category['name'];?></label>
+</div>
+<?php 
+} } 
+?>
+<input type="submit" name="submit" class="blue_submit search_btn" value="Update">
+</form>
+</div>        
+<?php 
+		}
+?>

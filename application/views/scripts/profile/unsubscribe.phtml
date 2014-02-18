@@ -1,0 +1,25 @@
+<style type="text/css">
+    #registeruser #submit {
+		float: none;
+        height: auto;
+        font-weight: bold;
+        width: 150px;
+    }
+	.button-green
+	{
+		width:140px;
+	}
+</style>
+<div id="content_bottom_center">
+    <div class="center_block_container2">
+        <h1>Please enter your email to unsubscribe </h1>
+        <div class="form_container">
+            <?php if(isset($this->message)): ?>
+                <div class="message_alert">
+                    <?= $this->message ?>
+                </div>
+            <?php endif ?>
+            <?= $this->form ?>
+        </div>
+    </div>
+</div>

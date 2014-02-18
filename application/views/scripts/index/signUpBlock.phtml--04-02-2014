@@ -1,0 +1,141 @@
+<style type="text/css">
+    #registeruser label {
+        font-family: Arial;
+        font-size: 13px;
+    }
+    
+    #registeruser input[type=text],
+	#registeruser input[type=password] {
+        width: 203px;
+        height: 20px;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		padding: 4px 0;
+		text-indent: 4px;
+		border: 1px solid #aaa;
+		-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.65);
+		-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.65);
+		box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.65);
+    }
+	#registeruser #submit {
+		padding-left: 40px;
+		padding-right: 40px;
+	}
+    .sign_up_box_container .form_container #registeruser dd {
+        margin-bottom: 5px;
+    }
+    #sign_up_box_top .form_container #registeruser label {
+        margin-bottom: 5px;
+        font-size: 15px
+    }
+    #registeruser {
+        margin-bottom: 20px;
+    }
+</style>
+
+	<?php
+	
+	//$controller = $this->getRequest()->getControllerName();
+	//$action = $this->getRequest()->getActionName();
+	//print $this->CurrController.'---'.$this->CurrAction;
+	
+	if(isset($this->CurrController) && /*isset($this->CurrAction)&&*/ $this->CurrController=='registration' /*&&$this->CurrAction=='index'*/)
+	{
+	}
+	else if(!(isset($_SESSION['Zend_Auth']['storage'])) && !$this->disableLoginForm)
+	{
+	?>
+	<div id="content_top">
+        
+       	<div id="content_top_inner">
+        
+        	<div id="content_top_subinner">
+				<div id="slider_js">
+					<div class="slides_container">
+					<a class="fancybox-media" href="http://www.youtube.com/watch?v=ZwLH7IB4VXw"><img src="media\image\free_ser.png" alt="" /></a>
+					</div>
+				</div>
+            
+				<div class="top_right"><!--
+				<span class="top_text_big">ALL FREELANCING SITES IN ONE, EASY TO USE PLACE</span>
+				-->
+				<!--
+				<div id="notebook_img">
+				</div>
+				-->
+				</div>
+			
+				<!--logos_box-->
+                <div class="sign_up_box_container">
+                <div id="sign_up_box">
+                    <div id="sign_up_box_top" style="margin-top: 10px;">
+                        <div class="title form_container" style="margin-bottom: 0; padding-bottom: 0;">
+                            <?php
+                            $form = new Application_Model_RegisterUser();
+                            echo $form->setAction('/registration');
+                            ?>
+                        </div>
+                        
+                        <div class="sbc_start_now">
+                            <a class="button-green" href="#" onclick="$('#submit').click(); return false;" style="margin-left: 20px;">Start Search »</a>
+                        </div>
+                        
+						<?php
+						/*
+						 <div class="input_box">
+							<label>Full name:<span class="star">*</span></label>
+                        	<input id="sign_up_name" type="text" />
+                        </div>
+						
+                        <div class="input_box">
+							<label>Email:<span class="star">*</span></label>
+                        	<input id="sign_up_email" type="text" />
+                        </div>
+                        
+                        <div class="input_box">
+							<label>Password:<span class="star">*</span></label>
+                        	<input id="sign_up_password" type="password" />
+                        </div>
+						
+						 <div class="input_box">
+							<label>Password(repeat):<span class="star">*</span></label>
+                        	<input id="sign_up_password" type="password" />
+                        </div>
+						
+						<div class="input_box">
+							<input type="checkbox" />
+							<span class="agree_info">I agree with FreelanceFM Terms & Privacy Policy</span>
+                        </div>
+						
+						<div class="input_box">
+							<input type="submit" value="SIGN UP"/>                       
+						</div>
+                    
+						<div class="sign_up_steps">
+							<label>Steps:</label>
+							<span class="step_id">1</span>
+							<span class="step_id">2</span>
+							<span class="step_id">3</span>
+						</div>
+					
+					*/?>
+	
+                    </div>
+                </div><!--sign_up_box-->
+				<!--<div class="rounded_corn_sign_up"></div>-->
+				<div id="sfj_social_platforms" class="social_sign_block">
+					<a id="fbc-login-button"><img src="/media/image/elements/sign_up_fb1.png"></a>
+					<a href="twitteroauth/redirect.php"><img src="/media/image/elements/sign_up_tw1.png"></a>
+					<a href="linkdin/demo.php?lType=initiate"><img src="/media/image/elements/sign_up_li1.png"></a>
+				</div>
+				</div>
+        
+        	</div><!--content_top_subinner-->
+        
+        </div><!--content_top_inner-->
+
+    </div><!--content_top-->
+	<?php
+	}
+	?>

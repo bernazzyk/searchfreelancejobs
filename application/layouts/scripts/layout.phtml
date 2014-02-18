@@ -1,0 +1,440 @@
+﻿<?php if (isset($_SERVER['HTTP_USER_AGENT']) && !strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6')) echo '<?xml version="1.0" encoding="UTF-8"?>'. "\n"; ?>
+<?php echo $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+       <link rel="icon" type="img/ico" href="/media/image/favicon.png">
+     <?php
+     $modelFromGeneral = new Application_Model_General();
+	 $transationTable = new  Application_Model_DbTable_Transactions();
+
+     
+     echo $this->headTitle();
+
+     echo $this->headMeta();
+
+     $this->headLink()
+	    
+		  ->appendStylesheet( $this->baseUrl( 'media/css/global/jquery.ui.datepicker.css' ) )
+         ->appendStylesheet( $this->baseUrl( 'media/css/global/reset.css' ) )
+         ->appendStylesheet( $this->baseUrl( 'media/css/global/global.css' ) )
+         ->appendStylesheet( $this->baseUrl( 'media/css/global/styles.css' ) )
+         ->appendStylesheet( $this->baseUrl( 'media/css/global/pph.css' ) )
+		 ->appendStylesheet( $this->baseUrl( 'media/css/global/jquery.fancybox.css' ) )
+         ->appendStylesheet( $this->baseUrl( 'media/css/global/guru_messages.css' ) )
+       //  ->appendStylesheet( $this->baseUrl( 'media/css/global/odesk.css' ) )
+        // ->appendStylesheet( $this->baseUrl( 'media/css/global/freelance.css' ) )
+		
+        // ->appendStylesheet( $this->baseUrl( '/media/js/global/jquery-ui-1.9.1/css/ui-lightness/jquery-ui-1.9.1.custom.css' ) )
+
+		 ->headLink( array( 'rel' => 'favicon', 'href' => $this->baseUrl( 'media/image/favicon.ico' ), 'PREPEND' ) )
+         ->headLink( array( 'rel' => 'SHORTCUT ICON', 'href' =>  $this->baseUrl( 'media/image/favicon.ico' ), 'PREPEND' ) );
+
+     echo $this->cssHelper();
+     echo $this->headStyle();
+
+     echo $this->jquery();
+
+     $this->headScript()
+        ->appendFile( $this->baseUrl( 'media/js/global/common.js' ) )
+        ->appendFile( $this->baseUrl( 'media/js/global/jquery/js/jquery.defaultvalue.js' ) )
+        ->appendFile( $this->baseUrl( 'media/js/global/jquery/js/colorbox/jquery.colorbox.js' ) )
+        ->appendFile( $this->baseUrl( 'media/js/global/jquery/js/tabs.js' ) )
+        ->appendFile( $this->baseUrl( 'media/js/global/jquery/js/jquery.dotimeout.js') )
+        ->appendFile( $this->baseUrl( 'media/js/global/jquery/js/jquery.tablesorter.min.js') )
+        ->appendFile( $this->baseUrl( 'media/js/global/curvycorners.src.js' ) )
+        ->appendFile( $this->baseUrl( 'media/js/global/jquery.ui.datepicker.js' ) )
+        ->appendFile( $this->baseUrl( 'media/js/global/slides.min.jquery.js' ) )
+        ->appendFile( $this->baseUrl( 'media/js/global/functions.js' ) )
+		 ->appendFile( $this->baseUrl( 'media/js/global/jquery.fancybox.js' ) )
+        ->appendFile( $this->baseUrl( 'media/js/global/jquery.fancybox-media.js' ) ) 
+        ->appendFile($this->baseUrl('media/js/global/jquery.address-1.5.min.js'))
+        ->appendFile($this->baseUrl('media/js/global/jquery.scrollTo-1.4.3.1-min.js'))
+        ->appendFile( $this->baseUrl( 'media/js/global/DD_belatedPNG_0.0.8a-min.js' ), 'text/javascript', array( 'conditional' => 'lt IE 7' ) )
+        ->appendScript( 'DD_belatedPNG.fix(\'#logo img\');', 'text/javascript', array( 'conditional' => 'lt IE 7' ) );
+
+     echo $this->javascriptHelper();
+     ?>
+<base href="<?php echo $this->baseUrl(); ?>/" />
+
+<!--HEADER SECTION starts here-->
+
+	<div class="overlay"></div>
+   	<div id="header">
+
+		
+		<script type="text/javascript">		
+window.fbAsyncInit = function() {
+    FB.init({
+        //appId      : '306301302802725',
+		//appId      : '630576263635204',
+		appId      : '471193466324484',
+        status     : true, // check login status
+        cookie     : true, // enable cookies to allow the server to access the session
+        oauth      : true, // enable OAuth 2.0
+        xfbml      : true  // parse XFBML
+    });
+ 
+    button = document.getElementById('fbc-login-button');
+    button.onclick = function() {
+        FB.getLoginStatus(function(response) {			
+            if (response.status === 'connected') {				
+                //window.location.href = '/auth/facebook/token/' +  response.authResponse.accessToken;
+				open_popup('auth/facebook/token/' +  response.authResponse.accessToken);
+            }
+            else {
+                FB.login(function(response) {					
+                    if (response.authResponse) {					
+                        //this.location = '/auth/facebook/token/' +  response.authResponse.accessToken;
+						open_popup('auth/facebook/token/' +  response.authResponse.accessToken);
+                    }}, {scope: 'email'});
+				
+            }
+        });
+ 
+    };
+};
+ 
+(function(d){
+     var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     d.getElementsByTagName('head')[0].appendChild(js);
+   }(document));
+$(document).ready(function() {
+	$('.fancybox-media').fancybox({
+		openEffect  : 'none',
+		closeEffect : 'none',
+		helpers : {
+			media : {}
+		}
+	});
+    });
+   
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-47836014-1', 'searchfreelancejobs.com');
+    ga('send', 'pageview');
+
+</script>
+<style type="text/css">
+    #sign_up_box #submit-label {
+        display: none;
+    }
+</style>
+
+        <?php /*<div id="header_top">
+
+		<div id="header_top_inner">
+		
+			<div class="head_lang">
+					<span class="head_lang_menu_text">english</span>
+					<span class="head_lang_arrow"> </span>
+            </div>
+			<ul class="head_lang_menu" id="head_lang_menu">
+				<li id="" class="language_item" lang="english">
+					<a>
+						<span class="head_lang_menu_text">english</span> 
+					</a>
+				</li>
+				<li id="" class="language_item" lang="german">
+					<a>
+						<span class="head_lang_menu_text">german</span> 
+					</a>
+				</li>
+				<li id="" class="language_item" lang="iatalian"> 
+					<a>
+						<span class="head_lang_menu_text">italian</span> 
+					</a>
+				</li>
+				
+		</ul>
+		</div>
+		
+			<!--
+        	<div id="header_top_inner">
+
+            	<a href="/"><img src="/media/image/logos/logo_header.png" alt="" title="" /></a>
+
+                <form action="#" id="sign_in_box">
+                        <div class="sign_in_input_box">
+                        	<label for="sign_in_email">Email</label>
+                            <input id="sign_in_email" name="email_login" value="" type="text" />
+                        </div>
+                        <div class="sign_in_input_box">
+                        	<label for="sign_in_password">Password</label>
+                            <input id="sign_in_password" name="password" value="" type="text" />
+                            <a href="account/forgot-password">Forgot password?</a>
+                        </div>
+                        <input id="sign_in_submit" name="sign_in_submit" value="" type="submit" />
+                    <div class="clear"></div>
+                </form>
+
+            </div>
+			-->
+
+        </div><!--header_top-->
+		*/ ?>
+		<!--
+		<div class="double_border_E_F"></div>
+		-->
+		
+       	<div id="header_center">
+
+        	<div id="header_center_inner">
+
+				<a href="/"><img src="/media/image/new-logo.png" class="free_fm_header" /></a>
+			
+				<ul id="top_menu_left" class="top_menu">
+
+                    <li><a href="/">Home</a></li>
+                    <!--<li><a href="/contact">Contact</a></li>
+                    <li><a href="/howitworks/index/">How It Works</a></li>
+                    <li><a href="/startaproject/index/">Start A Project</a></li>
+					<li><a href="/jobs">Jobs</a></li>
+					-->
+					
+					<?php
+					$auth = Zend_Auth::getInstance();
+					$authStorage = $auth->getStorage();
+					$user_id = $authStorage->read();
+					
+					$isConfirmed = null;
+					$isEmailExit = null;
+					$isPassExit = null;
+					if($user_id=='')
+					{?>
+						<?php /*<li id="sign_in_menu"><a class="login-btn" href="/auth/login/">Login <img class="sign_in_img" src="/media/image/new_design/triangle_down.png" /></a></li>*/ ?>
+                         <li><a class="evidentiate_blue" href="/freelancers/">Featured Freelancers</a></li>
+						<li><a href="/registration">Register</a></li>
+                        <li style="padding-top: 4px;">
+                            <form method="post" action="" id="sign_in_submit">
+                                <div>
+                                    <input id="sign_in_email" type="text" placeholder="Email" />
+                                    <input id="sign_in_password" type="password" placeholder="Password" />
+                                    <input type="submit" value="Login"/> 
+                                </div>
+                                <div style="text-align: left;">
+                                    <label style="font-family: 'HelveticaNeue'; font-size: 12px;">
+                                        <input type="checkbox" name="remember_me" id="sign_in_remember_me" value="1" checked="checked">
+                                        Remember me
+                                    </label>
+                                </div>
+                            </form>
+							<!--<div class="social_sign_block" style="text-align:end;">
+								<a id="fbc-login-button"><img src="/media/image/elements/ico_fb.png"></a> 
+								<a onClick="open_popup('twitteroauth/redirect.php');"><img src="/media/image/elements/ico_twitter.png"></a>
+								<a onClick="open_popup('linkdin/demo.php?lType=initiate');"><img src="/media/image/elements/ico_linkedin.png"></a>
+							</div> -->
+                        </li>
+						
+					<?php
+					}
+					else
+					{
+						$User = $modelFromGeneral->getUserById($user_id);
+						
+						$isConfirmed = (bool)$User['confirmed'];
+						$isEmailExit = $User['email'];
+						$isPassExit = $User['password'];
+						//$top_menu_user = $User['fname'] .'<br> '.$User['lname'];
+						$top_menu_user = $User['fname'] .'<br> '.$User['lname'];
+						$freelancerInfo = $modelFromGeneral->getFreelancerInfo($user_id);
+						$isFeaturedUser = $transationTable->checkIsFeatured($user_id);
+						?>
+							 
+							<li><a class="evidentiate_blue" href="/profile/my/">Profile</a></li>
+                           
+                            
+                            <?php if($isFeaturedUser==0) { ?>
+                            <li><a class="evidentiate_blue" href="/profile/upgrade/">Upgrade</a></li>
+							<?php } ?>
+                            <li><a class="evidentiate_blue" href="/freelancers/">Featured Freelancers</a></li>
+							<?php if ($User['type'] == 'admin'): ?>
+							    <li><a class="evidentiate_blue" href="/adminpanel/">Adminpanel</a></li>
+							<?php endif ?>
+							<li><a class="evidentiate_blue" href="/auth/logout/">Logout</a></li>
+                            <span class="top_menu_user">
+                            <?php 
+                            if(!empty($freelancerInfo) && $freelancerInfo['picture']!='' && file_exists('./data/profilePictures/'.$freelancerInfo['picture']))
+                            { ?>
+                            
+								<img class="avatar_min_width" src="./data/profilePictures/<?php print $freelancerInfo['picture'];?>" />
+                            <?php } ?>
+							<?php //print $top_menu_user;?>
+                            <strong class="username"><?php print $top_menu_user;?></strong>
+                            </span>
+							<!--<span class="logout_"><a href="/auth/logout/">Logout</a></span>-->
+						<?php
+						
+					}
+					?>
+					
+					
+                </ul><!--top_menu_left-->
+
+            </div><!--header_center_inner-->
+
+        </div><!--header_center-->
+		
+		<div id="header_bottom" style="text-align: center;">
+		    <?php if (false === $isConfirmed && $isEmailExit!='' && $isPassExit!=''): ?>
+		        Please check your email to activate your account.
+		    <?php endif ?>
+		</div><!--header-->
+    </div><!--header-->
+
+<!--HEADER SECTION ends here-->
+
+
+<!--CONTENT SECTION starts here-->
+
+				<div id="popup_login" class="popup_type">
+				<img id="close" src="/media/image/new_design/popup-closeButton.png" />
+				<div class="rounded_corn_sign_up_top"></div>
+                <div id="sign_in_box" class="_sign_in">
+                	<div id="sign_in_box_top">
+                    	<div class="title">
+                        	<p>SIGN IN!</p>
+                        </div>
+						
+						<p id="login_message" class="message"></p>
+						
+                        <div class="input_box">
+							<label>Email:<span class="star">*</span></label>
+                        	<input id="sign_in_email" type="text" />
+                        </div>
+                        
+                        <div class="input_box">
+							<label>Password:<span class="star">*</span></label>
+                        	<input id="sign_in_password" type="password" />
+                        </div>
+                        
+                        <div class="input_box">
+                            <label>
+                                <input type="checkbox" name="remember_me" id="sign_in_remember_me" value="1" checked="checked">
+                                Remember me
+                            </label>
+                        </div>
+
+						<div class="input_box">
+							<input type="submit" id="sign_in_submit" value="SIGN IN"/>
+							<span class="or_txt">or</span>
+							<a href="/registration/index/" class="blue_submit a_std_btn">SIGN UP</a>       
+						</div>
+						
+						<!--<button id="fbc-login-button">Facebook</button>
+						 <div class="social_sign_block">
+							<a id="fbc-login-button">Facebook</a> /
+							<a onClick="open_popup('twitteroauth/redirect.php');">Twitter</a> /
+							<a onClick="open_popup('auth/linkedin/');">LinkedIn</a> 
+						</div> -->
+						
+                    </div>
+                </div><!--sign_up_box-->
+				<div class="rounded_corn_sign_up"></div>
+				</div>
+
+				<div id="content_bottom">
+                
+               <?php  print $this->render('index/signUpBlock.phtml'); ?>
+			   
+			    
+               
+					<div id="content_bottom_inner">
+						<?php echo $this->layout()->content; ?>
+					</div>
+				</div>
+
+<!--CONTENT SECTION ends here-->
+
+
+<!--FOOTER SECTION starts here-->
+
+    <div id="footer">
+
+    	<div id="footer_inner">
+
+			<div class="footer_block f_menu">
+				<label class="title">Information</label>
+				<ul class="pages_list" style="float: left;">
+					<li><a href="/howitworks">How it works</a></li>
+					<li><a href="/termsconditions">Terms & conditions</a></li>
+					<li><a href="/privacy">Privacy Policy</a></li>
+					<li><a href="/contact">Contact us</a></li>
+                    <li><a target="_blank" href="http://searchfreelancejobs.postaffiliatepro.com/">Affiliates</a></li>
+				</ul>
+			</div>
+			
+			<div class="footer_block f_statistics">
+				<label class="title">Statistics</label>
+				
+				<div class="statistic_row">
+					
+					<span class="st_info"><?= number_format($modelFromGeneral->getNrOfProjects()) ?></span>
+					<span class="st_title">Available projects</span>
+				</div>
+				
+				<div class="statistic_row">
+					<!--<span class="st_info"><?= number_format($modelFromGeneral->getNrOfFreelancers() + 10500 + ((time() - strtotime('2013-04-11')) / 3600 / 24 * 86)) ?></span>-->
+					<span class="st_info"><?= number_format($modelFromGeneral->getNrOfFreelancers()) ?></span>
+					<span class="st_title">Freelancers</span>
+				</div>
+				
+				<div class="statistic_row">
+					<span class="st_info"><?= $modelFromGeneral->getNrOfPlatforms() ?></span>
+					<span class="st_title">Freelance Websites</span>
+				</div>
+			
+			</div>
+			
+			<div class="footer_block f_newsletter">
+				<img class="freelance_img" src="/media/image/new-logo.png">
+				
+				
+				<div class="newsletter_subscribe">
+					<label class="ns_info">Get our newsletter for news & discounts:</label>
+					<input type="text" />
+					<input type="submit" value=""/>
+				</div>
+			</div>
+			
+			<!--
+        	<ul id="footer_menu">
+            	<li><a href="/" class="active">Home</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/subscribe">Subscribe</a></li>
+                <li><a href="/terms-conditions">Terms&amp;Conditions</a></li>
+                <li><a href="/privacy">Our Privacy Policy</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+            </ul>
+
+            <br />
+
+            <div class="row">
+            	<span class="left">CopyRights � 2012 Freelancer.Fm. All rights reserved.</span>
+                <span class="right">
+                	<span class="right_1">find us on</span>
+                    <span class="social_1"><img src="/media/image/elements/ico_twitter.png" alt="" title="" /><a href="http://www.twitter.com" onclick="window.open(this.href,'_blank');return false;">Twitter</a></span>
+                    <span class="social_2"><img src="/media/image/elements/ico_fb.png" alt="" title="" /><a href="http://www.facebook.com" onclick="window.open(this.href,'_blank');return false;">Facebook</a></span>
+                </span>
+
+                <div class="clear"></div>
+            </div>
+			-->
+
+        </div><!--footer_inner-->
+
+    </div><!--footer-->
+	
+	<div id="footer_bottom">
+		<div id="footer_bottom_inner">&copy;2014 <a href="http://blankventures.com/" target="_blank" style="color: #ffffff;">BlankVentures.com</a>. All rights reserved.</div>
+    </div>
+</body>
+</html>

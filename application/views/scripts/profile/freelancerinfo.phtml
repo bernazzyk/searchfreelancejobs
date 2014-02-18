@@ -1,0 +1,106 @@
+<?php
+if(isset($this->FreelancerInboxData))
+{?>
+	<h3>My Messages Inbox
+		<img src="/media/image/logos/logo_freelancer.png" alt="" title="">
+	</h3>
+	<ul class="remote_user_messages">
+	<?php
+	foreach($this->FreelancerInboxData['items'] as $key=>$MessageInfo)
+	{?>
+		<li class="remote_user_item">
+			<div class="rui_user_info">
+			<?php print 'Message from <span class="uname">' . $MessageInfo['fromusername'] . '</span> (user id : '. $MessageInfo['fromuserid'] .') Date: ' . $MessageInfo['datetime'];?>
+			<?php
+			if(isset($this->ProjectInfo[(int)$MessageInfo['projectid']]))
+			{?>
+				<br>For project (Project Id: <?php print $MessageInfo['projectid'];?>) <a target="_blank" href="<?php print $this->ProjectInfo[$MessageInfo['projectid']]['url'];?>"><?php print $this->ProjectInfo[$MessageInfo['projectid']]['name'];?></a>
+			<?php
+			}
+			?>
+			</div>
+			<div class="rui_project_info">
+			</div>
+			<div class="rui_message_text">
+				<?php print $MessageInfo['text'];?>
+			</div>
+		</li>
+	<?php
+	}
+	?>
+	</ul>
+<?php	
+}
+/*--------------------------------------FEEDBACKS---------------------------------------*/
+else if(isset($this->UserFeedData)){
+//print_r($this->UserFeedData);
+?>
+	<div class="freelancer_feedbacks">
+		<h3>My Feedbacks
+			<img src="/media/image/logos/logo_freelancer.png" alt="" title="">
+		</h3>
+		<?php 
+		if($this->UserFeedData['totalreviews']['totalcounts']==0)
+		{
+			?>
+			<span class="fl_no_reviews">You did not recieve any feedback</span>
+			<?php
+		}
+		else
+		{
+			$Rating = 0.0;
+			$NrOfFeeds = (int)$this->UserFeedData['totalreviews']['totalcounts'] + 1;
+			for($i=0;$i<$NrOfFeeds;$i++)
+			{
+				$Rating += (float)$this->UserFeedData['totalreviews'][$i]['rating'];
+			}
+			
+			$Rating /= $NrOfFeeds;
+			?>
+			<span class="fl_avg_rating"><b>Average Rating:</b> <?php print $Rating;?></span>
+			<ul class="fl_feedbacks">
+			<?php
+			
+			for($i=0;$i<$NrOfFeeds;$i++)
+			{	
+				//print '++++'.$key. '---------';
+			//	if($key!='totalcounts')
+				//{
+					
+					?>
+					<li class="fl_feed_item">
+					<span class="fl_project_title">
+						<?php print $this->UserFeedData['totalreviews'][$i]['projectname'];?>
+					</span>
+					<div class="fl_container">
+						<span class="fl_reviewername">
+							<?php print $this->UserFeedData['totalreviews'][$i]['reviewername'];?>
+						</span>
+						<span class="fl_reviewdate">
+							<?php print $this->UserFeedData['totalreviews'][$i]['reviewdate'];?>
+						</span>
+					</div>
+					<div class="fl_reviewtxt">
+						<?php print '"'.$this->UserFeedData['totalreviews'][$i]['commenttext'].'"';?>
+					</div>
+					<div class="fl_rating">
+						Rating: <?php print $this->UserFeedData['totalreviews'][$i]['rating'];?>
+					</div>
+					<?php //print_r($FeedBackInfo);?>
+					</li>
+					<?php
+				//}
+				
+			?>
+				
+			<?php
+			}
+			?>
+			</ul>
+			<?php
+		}
+		?>
+	</div>
+<?php
+}
+?>

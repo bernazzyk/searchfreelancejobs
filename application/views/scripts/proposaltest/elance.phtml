@@ -1,0 +1,104 @@
+<form id="elance_form" method="POST" action="" currency="<?php print $this->CurrencyClass;?>">
+	
+	
+		<div class="row_form">
+		<label class="label_info">Describe Your Proposal</label>
+		
+		<?php $bidDesc = (isset($_POST['bidDesc']))? $_POST['bidDesc'] : '';?>
+			<textarea class="alert_if_error full_tarea"  name="bidDesc"><?php print $bidDesc; ?></textarea>
+		</div>
+		
+	<?php 
+		$milestone_check = '';
+		$el_style = 'style="display:none"';
+		$el_fix_style = 'style="display:block"';
+		 if( isset($_POST['milestone_check'] ) ) { 
+			$milestone_check = 'checked="checked"';
+			$el_style = 'style="display:block"';
+			$el_fix_style = 'style="display:none"';
+		} 
+	?>
+		
+		<div id="elance_fix_amount" <?php print $el_fix_style;?>>
+		<div class="row_form">
+		<label class="label_info">Total Amount (including Elance Fee)</label>
+		<?php $proposalAmount = (isset($_POST['proposalAmount']))? $_POST['proposalAmount'] : '';?>
+			<input type="text" class="alert_if_error"  name="proposalAmount" value="<?php print $proposalAmount; ?>" />
+		</div>
+		
+	
+	<?php $deliveryDate = array(
+			13001 => 'Within 1 day',
+			13002 => 'Within 3 days',
+			13003 => 'Within 1 week',
+			13010 => 'Within 2 weeks',
+			13011 => 'Within 3 weeks',
+			13004 => 'Within 1 month',
+			13012 => 'Within 2 months',
+			13005 => 'Within 3 months',
+			13006 => 'Within 6 months',
+			13007 => 'More than 6 months'
+		);?>
+	<div class="row_form">	
+		<label class="label_info">Estimated Delivery Date</label>
+		<select id="deliveryDate" tabindex="23" name="deliveryDate">
+			<option value="">Select One</option>
+			<?php 
+				$selected = (isset($_POST['deliveryDate']))? $_POST['deliveryDate'] : '';
+				foreach($deliveryDate as $del_key=>$del_value)
+				{
+					$selected_txt = ($del_key == $selected)? 'selected' : '';
+				?>
+					
+					<option value="<?php print $del_key;?>" <?php print $selected_txt;?>><?php print $del_value;?></option>
+				<?php
+				}
+				?>
+		</select>
+	</div>
+	</div>
+	
+	<div>
+		<span class="">Milestone</span>
+		<input id="milestone_check" name="milestone_check" <?php print $milestone_check ?> type="checkbox" style="margin-left: 0px;" value="1">
+	</div>
+	<div id="elance_milestone" <?php print $el_style;?>>
+		<div class="project_detail_fields">
+
+			<?php $total_cost = 0.0;?>
+			<?php if(isset($_POST['ms']))
+			{
+				foreach($_POST['ms'] as $key=>$value)
+				{
+					$total_cost += (float) $value['amount'];
+				?>
+				<div class="row_form detail_inputs">
+					<span class="detail_delete"></span>
+					<input placeholder="Description" class="detail_txt alert_if_error" name="ms[<?php print $key;?>][desc]" maxlength="80" type="text" value="<?php print $value['desc'];?>">
+					<input placeholder="Date" class="detail_date_el alert_if_error date_text" name="ms[<?php print $key;?>][date]" type="text" value="<?php print $value['date'];?>"> 
+					<input placeholder="Amount (including Elance Fee)" class="detail_amt_el alert_if_error <?php print $this->CurrencyClass;?>" name="ms[<?php print $key;?>][amount]" type="text" placeholder="0.00" value="<?php print $value['amount'];?>"> 
+				</div>
+				<?php
+				}
+			}
+			else
+			{?>	
+				<div class="row_form detail_inputs">
+					<span class="detail_delete"></span>
+					<input placeholder="Description" class="detail_txt alert_if_error" name="ms[0][desc]" maxlength="80" type="text">
+					<input placeholder="Date" class="detail_date_el alert_if_error date_text" name="ms[0][date]" type="text"> 
+					<input placeholder="Amount (including Elance Fee)" class="detail_amt_el alert_if_error <?php print $this->CurrencyClass;?>" name="ms[0][amount]" type="text" placeholder="0.00"> 
+				</div>
+			<?php
+			}
+			?>
+		</div>
+		<div class="elance_total_block">
+			<a id="add_new_item_elance">+ add new item</a>
+			<span class="elance_total_title">Total</span>
+			<input type="text" class="elance_total <?php print $this->CurrencyClass;?>" disabled="" value="<?php print $total_cost;?>"/>
+		</div>
+	</div>
+	
+	<input type="submit" class="blue_submit search_btn" id="elance_submit" name="elance_submit" value="Send">
+</form>

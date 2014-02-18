@@ -1,0 +1,14 @@
+<div class="center_block_container">
+	<div class="form_container">
+	<?php
+	if(isset($this->message))
+	{?>
+		<div class="message_alert">
+		<?php print $this->message;?>
+		</div> 
+	<?php
+	}
+	print $this->form;
+	?>
+	</div>
+</div>

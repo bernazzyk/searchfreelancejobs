@@ -1,0 +1,106 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('a.fancybox').fancybox({
+		autoSize   : false,
+		'width': 400,
+		'height': 250,
+        type: 'iframe',
+		 afterClose: function () { // USE THIS IT IS YOUR ANSWER THE KEY WORD IS "afterClose"
+                parent.location.reload(true);
+            }
+		});
+    });
+</script>
+ <script type="text/javascript">
+function deletePhoto(pid)
+{
+	if(pid)
+	{
+		window.location.href = '/profile/deletephoto/pid/'+pid; 
+	}
+	return false;
+}
+</script>
+<div class="center_block_container" style="float:none; width:auto;">
+
+	<div class="proposal_form_container " style="float:none;">
+
+			
+
+	<?php
+
+	if(isset($this->message))
+
+	{?>
+
+		<div class="message_alert">
+
+		<?php print $this->message;?>
+
+		</div> 
+
+	<?php
+
+	} 
+
+	if($this->userid!=0)
+
+	{
+
+	print $this->form;
+
+	?>
+  
+  <label style="color: #7E807F;font: bold 14px arial;text-align: left;display: block;padding: 0 0 3px 0;">Projects</label>
+<div class="portfolioPhoto">
+<?php if(count($this->photoRows)!=10) { ?>
+<!--
+ <a href="/profile/uploadphoto" class=" fancybox fancybox.iframe a_std_btn blue_submit float_right">Add Photo</a>
+ -->
+ <?php
+ }
+ if(!empty($this->photoRows)) { ?>
+ <table align="left">
+ <tr>
+ <?php 
+ 	$c =1;
+ 	foreach($this->photoRows as $photoRow) { ?>
+   <td align="center">
+   <?php echo $photoRow['title']; ?>
+   <img width="180" height="135" class="avatar_max_width" src="./data/portfolioPhoto/<?php echo $photoRow['photos'];?>" /><br />
+   <a class="remove_btn" href="javascript:void(0);" onclick="deletePhoto('<?php echo $photoRow['photos_id'];?>')" >Remove</a>
+   </td>
+  <?php if($c==5) 
+  	echo "</tr><tr>";
+  	$c++;
+	} 
+	?>
+   </tr>
+</table>
+ <?php 
+ }
+ ?>
+</div>
+<div class="clear"></div>
+<a href="/profile/uploadphoto" class="fancybox fancybox.iframe blue_submit search_btn a_std_btn float_left">Add Project</a>
+<div class="clear"></div>
+<a href="javascript:voide()" onclick="document.getElementById('proposalform').submit();" class="blue_submit search_btn a_std_btn float_left">Update</a>
+<a id="go_to_my_profile1" style="margin-left:20px;" href="/profile/my/" class="blue_submit search_btn a_std_btn float_left">MY PROFILE</a>
+    
+
+	<?php
+
+	}
+
+	?>
+
+	<a href="/payment/sub-cancel" style="float: left; font-size: 12px; color: red; position: relative; left: 50px;top:21px;">Cancel membership</a>
+    <?php if($this->isFeaturedUser) { ?>
+    &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.paypal.com" target="_blank" style="margin-left: 20px;float: left; font-size: 12px; color: red; position: relative; left: 50px;top:21px;">Cancel Freelancer profile</a>
+    <?php } ?>
+
+	</div>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>

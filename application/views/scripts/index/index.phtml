@@ -1,0 +1,135 @@
+  <?php if($this->userId!=0 && $this->uid!='') { ?>  
+<script type="text/javascript">
+function sendMessage(id)
+{
+ 	$('div #msgSuccess').hide();
+	$('div #error_msg').hide();
+	$('div #msgForm').show();
+ 	$('#account_id').val(id);
+	$.fancybox({
+        type: 'iframe',
+        content: $('#send_message').html(),
+    });
+}
+function send()
+{
+    var message = $.trim($('div .fancybox-wrap textarea#message').val());
+    if(message!='')
+    {
+        var stringData = $('div .fancybox-wrap form#messageForm').serialize();
+        $('div #msgSuccess').show();
+        $('div #msgForm').hide();
+         setTimeout( function() {$.fancybox.close(); },2000); // 2000 = 2 secs
+        $.ajax({
+        type: "POST",
+        url: '/freelancers/sendmessage/',
+        data: stringData,
+        success: function(src){}
+        });
+    }
+    else
+    {
+         //alert('no');
+         $('div #error_msg').show();
+    }
+}
+$(document).ready(function(){
+sendMessage(<?php echo $this->uid; ?>);
+});
+</script>
+            
+<div style="display: none">
+<div id="send_message" class="subscribe_category">
+<div id="msgSuccess" style="display: none;margin:40; text-align:center; overflow:hidden;">Your message was sent successfully!</div>
+<div id="msgForm">
+<form name="messageForm" id="messageForm"  method="post" onsubmit="return false;">
+<label class="item_title">Send Message To: <?php echo $this->uname; ?></label><br />
+<div class="catRow">
+<div id="error_msg" style="display:none; color:red;">Please enter your message text!</div>
+<textarea name="message" id="message" cols="40" rows="7" placeholder="Enter message text"></textarea> 
+<input type="hidden" name="account_id" id="account_id" />
+</div>
+<div class="catRow">
+<input type="submit" name="submit" id="messageSendButton" class="blue_submit search_btn" value="Send" onclick="send();">
+</div>
+</form>
+</div>
+</div>
+</div>
+  <?php } ?>
+  
+	<?php if ($this->step3): ?>
+        <script type="text/javascript">
+            document.write(unescape("%3Cscript id=%27pap_x2s6df8d%27 src=%27" + (("https:" == document.location.protocol) ? "https://" : "http://") + "searchfreelancejobs.postaffiliatepro.com/scripts/trackjs.js%27 type=%27text/javascript%27%3E%3C/script%3E"));
+        </script> <script type="text/javascript">
+            PostAffTracker.setAccountId('default1');
+            var sale = PostAffTracker.createSale();
+            sale.setOrderID('ORD_12345XYZ');
+            sale.setProductID('test product');
+
+            PostAffTracker.register();
+        </script>
+        <p>
+            Congratulations! Start bidding on jobs below. You can also filter your results on the right hand side.
+        </p><br>
+    <?php endif ?>
+
+    <div id="content_bottom">
+       	<div id="content_bottom_inner">
+			<?php
+					$auth = Zend_Auth::getInstance();
+					$authStorage = $auth->getStorage();
+					$user_id = $authStorage->read();
+					if($user_id=='')
+					{
+			?>
+			<div class="freelancefm_short_info">
+				<span class="fsi_title">Why sign up?</span>
+				<div class="fsi_content">
+					SearchFreelanceJobs.com allows freelancers to intuitively bid on projects across the biggest platforms in one central location.<br /> Generate more money in less time.
+					<br /><br />
+					Sign up for a <a id="a_signUp"href="/registration/index">Free</a> today!
+				</div>
+			</div>
+			<img class="logos" src="/media/image/new_design/logos.png"/>
+			<div class="free_emp_block">
+				<label class="feo_title" style="text-transform: capitalize;">Freelancers</label>
+				<div class="free_emp_oportunities left">
+					<ul class="feo_ul_oprtunities">
+						<li>Increase earnings while decreasing efforts</li>
+						<li>Large selection of jobs in one central location</li>
+						<li>Never miss a great opportunity while hunting for jobs</li>
+					</ul>
+				</div>
+				<div class="free_emp_oportunities right">
+					<ul class="feo_ul_oprtunities">
+						<li>Intuitively bid on any job that interests you</li>
+						<li>Filter jobs seamlessly to find the best opportunity</li>
+						<li>Real-time job scraping</li>
+					</ul>
+				</div>
+				<!--<a class="a_start_now_btn" href="/registration" style="background: url('/media/image/new_design/big_btn_blue2.png') no-repeat scroll 0 0 transparent;">Try Now</a>-->
+				<!--
+				<div class="free_emp_oportunities right">
+					<label class="feo_title">EMPLOYERS</label>
+					<ul class="feo_ul_oprtunities">
+						<li>Post to multiple job sites at once</li>
+						<li>Get apps from freelancers on all cites</li>
+						<li>Manage finances in one location</li>
+						<li>View contractor progress from one spot</li>
+						<li>Increase marketshare & productivity</li>
+					</ul>
+					<a class="a_start_now_btn" href="/registration/index/">Start Now</a>
+				</div>
+				-->
+			</div>
+			<?php
+			}
+			?>
+    <div class="projects_block_container">
+                <?php print $this->ProjectsListTable;?>
+            </div>
+			<?php print $this->BlockOfAdvancedSearch;?>
+			</div>
+    </div><!--content_bottom-->
+    <div class="clear"></div>

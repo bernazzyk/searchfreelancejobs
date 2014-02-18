@@ -1,0 +1,13 @@
+<?php $this->headTitle('Manage payment page')->headTitle('payment page') ?>
+
+<ul class="breadcrumb">
+  <li><a href="/adminpanel/">Adminpanel</a> <span class="divider">/</span></li>
+  <li>Header for all platforms</li>
+</ul>
+<?php if ($this->saved): ?>
+    <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        The changes was saved
+    </div>
+<?php endif ?>
+<?= $this->form ?>
