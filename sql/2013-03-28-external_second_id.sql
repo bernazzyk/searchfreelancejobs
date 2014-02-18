@@ -1,0 +1,1 @@
+ALTER TABLE `projects` ADD COLUMN `external_second_id` VARCHAR(100) AFTER `external_id`;

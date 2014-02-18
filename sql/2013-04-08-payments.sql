@@ -1,0 +1,8 @@
+CREATE TABLE `transactions` (
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+  `account_id` INTEGER UNSIGNED NOT NULL,
+  `amount` DECIMAL(8.2) NOT NULL,
+  `added` DATETIME NOT NULL,
+  PRIMARY KEY (`id`)
+)
+ENGINE = InnoDB;

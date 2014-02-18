@@ -1,0 +1,1 @@
+ALTER TABLE `platforms` ADD COLUMN `bid_url` VARCHAR(255) NOT NULL AFTER `cookie`;

@@ -1,0 +1,23 @@
+{
+    "name": "blake-gardner/mac-address",
+    "description": "Get, validate and generate MAC addresses.",
+    "license": "MIT",
+    "keywords": ["MAC", "Address", "IP", "ifconfig", "DHCP"],
+    "authors": [
+        {
+            "name": "Blake Gardner",
+            "email": "blakegardner@cox.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "dev-phpcs-fixer"
+    },
+    "autoload": {
+        "psr-0": {
+            "BlakeGardner\\MacAddress": "src/"
+        }
+    }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE `accounts` ADD COLUMN `connects` TEXT AFTER `first_time`;

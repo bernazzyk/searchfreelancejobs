@@ -1,0 +1,26 @@
+RewriteEngine On
+
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+#RewriteCond %{REQUEST_FILENAME} -s [OR]
+#RewriteCond %{REQUEST_FILENAME} -l [OR]
+#RewriteCond %{REQUEST_FILENAME} -d
+#RewriteRule ^.*$ - [NC,L]
+#RewriteRule ^.*$ index.php [NE,L]
+#RewriteBase /yestoappsloginonly/
+#RewriteRule ^yestoappsloginonly - [NC,L]
+#RewriteRule ^yestoappsloginonly index.php [NE,L]
+#RewriteRule ^$ loginhere/index.html
+
+#RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond $1 \.(gif|jpg|png|css|js|ico)$ [NC,OR]
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{ENV:REDIRECT_STATUS} ^$
+RewriteRule . - [S=1]
+RewriteRule . /index.php [L]
+
+setenv APPLICATION_ENV development
+

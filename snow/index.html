@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en_US" xml:lang="en_US">
+ <head>
+  <title>SnowTigerLib -- PHP Freelancer API Wrapper class</title>
+  <script type="text/javascript" src="http://stl.olfreelancer.com/scripts/shCore.js"></script> 
+  <script type="text/javascript" src="http://stl.olfreelancer.com/scripts/shBrushPhp.js"></script> 
+  <link type="text/css" rel="stylesheet" href="http://stl.olfreelancer.com/styles/shCore.css"/> 
+  <link type="text/css" rel="stylesheet" href="http://stl.olfreelancer.com/styles/shThemeDefault.css"/> 
+  <script type="text/javascript"> 
+		SyntaxHighlighter.config.clipboardSwf = 'http://stl.olfreelancer.com/scripts/clipboard.swf';
+		SyntaxHighlighter.all();
+  </script> 
+  <style type="text/css">
+  body {
+	color:#333333;
+	font-family:Arial,Tahoma,Verdana;
+	font-size:12px;
+	line-height:20px;
+  }
+  div.title{
+  	font-size:20px;
+	font-weight:normal;
+	margin:0 0 10px;
+	padding:0;
+	text-decoration:none;
+  }
+  span.subtitle {
+  	font-size:16px;
+  	font-weight:bold;
+  }
+  span.file {
+  	font-weight:bold;
+  	font-style:italic;
+  	color:#000090;
+  }
+  div.content{
+  	overflow:auto;
+  }
+  div.content p{
+  	margin:0;
+	padding:0 0 10px;
+  }
+  a, a:visited {
+	color:#D80200;
+	font-weight:bold;
+  }
+  a, a:visited {
+	color:#2255AA;
+	text-decoration:none;
+  }
+  </style>
+ </head>
+ <body>
+   <div class="title">SnowTigerLib -- PHP Freelancer API Wrapper class</div>
+   <div class="content">
+	<p>SnowTigerLib is a wrapper class around the Freelancer API. </p>
+	<p>SnowTigerLib requires <strong>PHP 5.2</strong> and the <a href="http://us.php.net/curl"  target="_blank">lib_curl</a> module to be compiled into your PHP build. It also performs best when safe_mode is turned off.</p>
+	<p>The library <a href="http://code.google.com/p/snowtigerlib/downloads/list"  target="_blank">can be downloaded here</a>.</p>
+	<p><a href="http://stl.olfreelancer.com/examples/" target="_blank">Examples</a>.</p>
+	<p><a href="http://stl.olfreelancer.com/docs/" target="_blank">Documentation</a>.</p>
+	<p>And of course, <a href="http://code.google.com/p/snowtigerlib/issues/list"  target="_blank">please report any bugs or issues you might come across</a>.</p>
+	<p><span class="subtitle">Installation</span><br/>
+	To use SnowTigerLib,First you need change the configuration in file "<span class="file">SnowTigerLib_Config.inc.php</span>".<br/>
+	There are three configuration items you must change:<br/>
+	<pre class="brush: php;"> 
+	//Your Consumer Token
+	$apiConfig['ConsumerToken'] = 'Your Consumer Token';
+	//Your Consumer Secret
+	$apiConfig['ConsumerSecret'] = 'Your Consumer Secret';
+	//Callback url
+	$apiConfig['CallBack'] = 'http://stl.olfreelancer.com/callback.php?';
+	</pre>
+	Then you can edit the "<span class="file">callback.php</span>" file if you like.
+	<pre class="brush: php;">
+	session_start();
+	require_once ('SnowTigerLib.php');
+	$o = new SnowTigerLib( $_SESSION['token']['oauth_token'] , $_SESSION['token']['oauth_token_secret']  );
+	
+	$access_key = $o->getRequestAccessToken(  $_REQUEST['oauth_verifier'] ) ;
+	
+	//You can save the access_key to your database,then you can use them at the next time without Authorize again
+	$_SESSION['access_key'] = $access_key;
+	//Redirect to any page you want
+	Header("Location:examples/index.php");
+	</pre>
+	Now simply include "<span class="file">SnowTigerLib.php</span>" in your document.For example:
+	<pre class="brush: php;">
+	session_start();
+	require_once ('../SnowTigerLib.php');
+	if (!isset ($_SESSION['access_key'])) {
+		$stl = new SnowTigerLib();
+		$token = $stl->getRequestToken();
+		$_SESSION['token'] = $token;
+		echo '&lt;a href="'.$stl->getAuthorizeURL().'">Authorize with Freelancer.com&lt;/a>&lt;br/>';
+	}else{
+		$stl = new SnowTigerLib($_SESSION['access_key']['oauth_token'], $_SESSION['access_key']['oauth_token_secret']);
+		
+		//get the Account Details
+		$accountDetail = $stl->getAccountDetails()->getArrayData();
+		
+		echo '&lt;h1>Welcome,'.$accountDetail['fullname'].'&lt;/h1>&lt;br/>';
+	}
+	</pre>
+	</p>	
+  </div>
+ </body>
+</html>
