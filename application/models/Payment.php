@@ -155,7 +155,7 @@ If you are not automatically redirected to paypal within 5 seconds...
 	<input type="hidden" name="item_number" value="1">
     <input type="hidden" name="a3" value="{$UPGRADE_COST}">
     <input type="hidden" name="p3" value="1">
-    <input type="hidden" name="t3" value="D">
+    <input type="hidden" name="t3" value="M">
     <input type="hidden" name="src" value="1">
     <input type="hidden" name="no_note" value="1">
     <input type="hidden" name="no_shipping" value="1">

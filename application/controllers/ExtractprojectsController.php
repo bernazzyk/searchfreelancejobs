@@ -1175,7 +1175,7 @@ END;
         $currencies = array(1=>'$', 2=>'€', 3=>'£');       
         $lastProject = $projectModel->getLast(Application_Model_DbTable_Platforms::MONSTER_ID);
         $lastProjectDate = null === $lastProject ? null : strtotime($lastProject->posted);
-        $rss = Zend_Feed_Reader::import('http://rss.jobsearch.monster.com/rssquery.ashx?q=Web%20Developer');   
+        $rss = Zend_Feed_Reader::import('http://rss.jobsearch.monster.com/rssquery.ashx?q=Web%20Developer');
 		foreach($rss as $entry) {
 		$project = $this->ProjectListFields;
 		$project['title'] = $entry->getTitle();
@@ -1266,10 +1266,10 @@ END;
         $this->_helper->viewRenderer->setNoRender();
         $projectModel = new Application_Model_DbTable_Projects();
         $platformCategoryModel = new Application_Model_DbTable_PlatformCategories();
-        $currencies = array(1=>'$', 2=>'€', 3=>'£');       
+        $currencies = array(1=>'$', 2=>'€', 3=>'£');
         $lastProject = $projectModel->getLast(Application_Model_DbTable_Platforms::BEHANCE_ID);
         $lastProjectDate = null === $lastProject ? null : strtotime($lastProject->posted);
-        $rss = Zend_Feed_Reader::import('http://feeds.feedburner.com/BehanceNetworkJoblist');   
+        $rss = Zend_Feed_Reader::import('http://feeds.feedburner.com/BehanceNetworkJoblist');
 		foreach($rss as $entry) {
 		$project = $this->ProjectListFields;
 		$project['title'] = $entry->getTitle();

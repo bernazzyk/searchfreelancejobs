@@ -256,5 +256,19 @@ class PaymentController extends Zend_Controller_Action
         file_put_contents(APPLICATION_PATH . '/../logs/paypal.log', $data, FILE_APPEND);
         die('result');
     }
-    
+	/*
+    public function testAction()
+	{
+		$payment = new Application_Model_Payment();
+			$transactionModel = new Application_Model_DbTable_Transactions();
+			$transaction = $transactionModel->createRow();
+			$transaction->account_id = 1;
+			$transaction->amount = 100;
+			$transaction->added = new Zend_Db_Expr('NOW()');
+			$transaction->paytype = 'paypal';
+			$transaction->payment_status = 'N';
+			$transaction->expiry_date = date('Y-m-d H:i:s', strtotime("+30 days"));
+			$transaction->save();
+	}
+	*/
 }
