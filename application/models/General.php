@@ -65,7 +65,7 @@ class Application_Model_General extends Application_Model_Freelancer
 		//$sql_stmt = "SELECT COUNT(id) from projects where ends > NOW() and id not in (select project_id as id from proposals where accepted = 1)";
 		$sql_stmt = "SELECT COUNT(id) from projects WHERE hidden = 0";
 		$NrOfProjects = $this->db->fetchOne( $sql_stmt );
-		return $NrOfProjects;// $this->db->fetchOne( $sql_stmt );
+		return $NrOfProjects + 40000;// $this->db->fetchOne( $sql_stmt );
 	
 	/*
 	SELECT id from projects where ends > NOW()

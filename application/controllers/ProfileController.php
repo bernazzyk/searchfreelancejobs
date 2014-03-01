@@ -804,7 +804,6 @@ class ProfileController extends Zend_Controller_Action
 		$user_id = (int) $authStorage->read();
 		$modelFromGeneral = new Application_Model_General();
 		//$user_id = (int) $modelFromGeneral->getUserIdByEmail($user_email);
-		
 		if($user_id != 0)
 		{
 			$model = new Application_Model_Profile();	 
@@ -812,13 +811,20 @@ class ProfileController extends Zend_Controller_Action
 			$acountInfo = $model->getAcountInfo($user_id);
 			//print_r($acountInfo);
 			//die('hete');
-			
 			$photoTable = new Application_Model_DbTable_Freelancersphotos();
 			$transationTable = new  Application_Model_DbTable_Transactions();
 			$photoRows = $photoTable->getUserPhotos($user_id,'10');
 			$this->view->photoRows = $photoRows;
-				
+			$this->view->acountInfo = $acountInfo;	
 			$this->view->isFeaturedUser = $transationTable->checkIsFeatured($user_id);
+			$this->view->featuredFreelancerDetails = $transationTable->getFeaturedFreelancerDetails($user_id);
+			$request = $this->getRequest();
+            $msg = (int) $request->getParam('msg');
+			if($msg==1)
+			$this->view->message = '<span class="f_success_msg">You have sucessfully canceled your profile from featured members!.</span>';
+			else if($msg==2)
+			$this->view->message = '<span class="f_error_msg">Error occured please try later or contact site admin for canceled the featured members profile</span>';
+			//print_r($featuredFreelancerDetails);
 	
 			$form = new Application_Model_CreateProfileForm();
 		
@@ -1183,8 +1189,16 @@ class ProfileController extends Zend_Controller_Action
         $form = new Application_Model_PaymentForm();
 
         /*29.1.2014 hook for enable only paypal payment, to enable cc payment type comment the line below*/
-        $this->view->sendForm = $payment->getPayPalFormForUpgrade();
-
+						$transaction = $transactionModel->createRow();
+						$transaction->account_id = $userId;
+						$transaction->amount = UPGRADE_COST; //UPGRADE_COST set after test 
+						$transaction->added = new Zend_Db_Expr('NOW()');
+						$transaction->paytype = 'paypal';
+						$transaction->payment_status = 'N';
+						$transaction->expiry_date = date('Y-m-d H:i:s');
+						$transaction->save();
+						$this->view->sendForm = $payment->getPayPalFormForUpgrade($transaction);
+		//end				
         if ($request->isPost()) {
             switch ($request->getPost('paytype')) {
                 case 'paypal':
@@ -1215,7 +1229,200 @@ class ProfileController extends Zend_Controller_Action
                 
                 switch ($account->paytype) {
                     case 'paypal':
-                        $this->view->sendForm = $payment->getPayPalFormForUpgrade();
+						$transaction = $transactionModel->createRow();
+						$transaction->account_id = $userId;
+						$transaction->amount = UPGRADE_COST; //UPGRADE_COST set after test 
+						$transaction->added = new Zend_Db_Expr('NOW()');
+						$transaction->paytype = 'paypal';
+						$transaction->payment_status = 'N';
+						$transaction->expiry_date = date('Y-m-d H:i:s');
+						$transaction->save();
+                        $this->view->sendForm = $payment->getPayPalFormForUpgrade($transaction);
+                        break;
+                    case 'cc':
+                        $transaction = $transactionModel->createRow();
+                        $subscriptionId = $payment->ccQuery($transaction, $account, $cc);
+                        if ($subscriptionId) {
+							$transaction->account_id = $userId;
+                        	$transaction->amount = UPGRADE_COST;
+                        	$transaction->added = new Zend_Db_Expr('NOW()');
+                        	$transaction->paytype = 'cc';
+							$transaction->payment_status = 'Y';
+							$transaction->expiry_date = date('Y-m-d H:i:s', strtotime("+30 days"));
+                        	$transaction->save();
+                            $account->subscription_id = $subscriptionId;
+                            $account->subscription_check = new Zend_Db_Expr('NOW()');
+                            $account->agreed = 1;
+                            $account->agreed_at = new Zend_Db_Expr('NOW()');
+                            $account->save();
+                            $this->_redirect('/');
+                        } else {
+                            $this->view->ccError = true;
+                        }
+                        
+                        break;
+                }
+            }
+        }
+        
+        $this->view->form = $form;
+        $this->view->account = $account;
+    }
+	public function cancelfreelancerprofileAction()
+	{
+		$this->_helper->layout()->disableLayout(); 
+		$auth = Zend_Auth::getInstance();
+        $authStorage = $auth->getStorage();
+        $user_id = (int) $authStorage->read();
+		$transactionModel = new Application_Model_DbTable_Transactions();
+		$paymentModel = new Application_Model_Payment();
+		$row = $transactionModel->getFeaturedFreelancerDetails($user_id);
+		$result = $paymentModel->cancelPayPal($row['paypal_subscription_id']);	
+		if($result)	
+		{
+			$this->_redirect('/profile/create/msg/1'); 
+		}
+		else
+		{
+			$this->_redirect('/profile/create/msg/2'); 
+		}
+		 
+		
+	}
+	public function cancelfreelancerprofiletestAction()
+	{
+		$this->_helper->layout()->disableLayout(); 
+		$auth = Zend_Auth::getInstance();
+        $authStorage = $auth->getStorage();
+        $user_id = (int) $authStorage->read();
+		$transactionModel = new Application_Model_DbTable_Transactions();
+		$paymentModel = new Application_Model_Payment();
+		$row = $transactionModel->getFeaturedFreelancerDetails($user_id);
+		
+	/*	$config = array('auth' => 'login','username' => 'support@searchfreelancejobs.com','password' => '123qwe');
+		$transport = new Zend_Mail_Transport_Smtp('mail.searchfreelancejobs.com', $config);	 								
+		$mail = new Zend_Mail();
+		$mail->setFrom('no-reply@SearchFreelanceJobs.com', 'SearchFreelanceJobs.com');
+		$mail->setSubject('Your SearchFreelanceJobs Freelancer profile Cancel');
+		$mail->setBodyText("You have successfully canceled your profile from featured members.\n\n\nWith love,\nThe SearchFreelanceJobs.com Team");
+		$mail->addTo('arvindk427@gmail.com');						
+		$mail->send($transport);
+die; */
+		//$result = $paymentModel->cancelPayPal($row['paypal_subscription_id']);		
+		 $apiRequest = 'USER=' . urlencode('arvindkumar_api1.gmail.com')
+            . '&PWD=' . urlencode('ZHGGLY32C93K38GH')
+            . '&SIGNATURE=' . urlencode('An5ns1Kso7MWUdW4ErQKJJJ4qi4-A6FDIUS3FiUV5jy62C.R78f3k4Vq')
+            . '&VERSION=76.0'
+            . '&METHOD=ManageRecurringPaymentsProfileStatus'
+            . '&PROFILEID=' . urlencode($row['paypal_subscription_id'])
+            . '&ACTION=Cancel'
+            . '&NOTE=' . urlencode('Profile cancelled at store');
+        
+        $url = 'https://api-3t.sandbox.paypal.com/nvp';
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $apiRequest);
+        
+        $response = curl_exec($ch);
+        
+        if (!$response) {
+            return false;
+        }
+        //echo "<pre>";
+		//print_r($response);
+         curl_close($ch);
+		 parse_str($response, $parsedResponse);
+         if(isset($parsedResponse['ACK']) && 'Success' == $parsedResponse['ACK'])
+		 {
+		 	//echo "Your request receive.It take some time to process";
+			$this->_redirect('/profile/create/msg/1');
+		 }	 
+		else
+		{
+			$this->_redirect('/profile/create/msg/2'); 
+		}
+		die;
+		
+	}
+	public function upgradetestAction()
+    {
+        $auth = Zend_Auth::getInstance();
+        $authStorage = $auth->getStorage();
+        $userId = (int)$authStorage->read();
+        if (!$userId) {
+            throw new Zend_Controller_Action_Exception('not logged in');
+        }
+        
+        $accountModel = new Application_Model_DbTable_Accounts();
+        $transactionModel = new Application_Model_DbTable_Transactions();
+		
+        $payment = new Application_Model_Payment();
+        $account = $accountModel->find($userId)->current();
+        if (null === $account) {
+            throw new Zend_Controller_Action_Exception('Wrong parameters');
+        }
+        
+        $request = $this->getRequest();
+        $form = new Application_Model_PaymentForm();
+
+        /*29.1.2014 hook for enable only paypal payment, to enable cc payment type comment the line below*/
+						$transaction = $transactionModel->createRow();
+						$transaction->account_id = $userId;
+						$transaction->amount = 1; //UPGRADE_COST set after test 
+						$transaction->added = new Zend_Db_Expr('NOW()');
+						$transaction->paytype = 'paypal';
+						$transaction->payment_status = 'N';
+						$transaction->expiry_date = date('Y-m-d H:i:s');
+						$transaction->save();
+						$this->view->sendForm = $payment->getPayPalFormForUpgradeSandBox($transaction);
+		//end				
+        if ($request->isPost()) {
+            switch ($request->getPost('paytype')) {
+                case 'paypal':
+                    foreach ($form->getElements() as $elementName => $element) {
+                        $element->setRequired(false);
+                    }
+                    break;
+                case 'cc':
+                    break;
+            }
+            if ($form->isValid($request->getPost())) {
+                $account->setFromArray($form->getValues());
+                if ($form->paytype->getValue() == 'cc') {
+                    $cc = array(
+                        'cctype' => $form->cctype->getValue(),
+                        'cc' => $form->cc->getValue(),
+                        'ccexpmonth' => $form->ccexpmonth->getValue(),
+                        'ccexpyear' => $form->ccexpyear->getValue(),
+                        'ccv' => $form->ccv->getValue()
+                    );
+                    $ccToStore = $cc;
+                    $ccToStore['cc'] = substr_replace($ccToStore['cc'], '', 0, -4);
+                    unset($ccToStore['ccv']);
+                    $account->setCC($ccToStore);
+					 $account->save();
+                }
+               
+                
+                switch ($account->paytype) {
+                    case 'paypal':
+						$transaction = $transactionModel->createRow();
+						$transaction->account_id = $userId;
+						$transaction->amount = 1; //UPGRADE_COST set after test 
+						$transaction->added = new Zend_Db_Expr('NOW()');
+						$transaction->paytype = 'paypal';
+						$transaction->payment_status = 'N';
+						$transaction->expiry_date = date('Y-m-d H:i:s');
+						$transaction->save();
+                        $this->view->sendForm = $payment->getPayPalFormForUpgradeSandBox($transaction);
                         break;
                     case 'cc':
                         $transaction = $transactionModel->createRow();

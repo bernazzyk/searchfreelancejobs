@@ -9,7 +9,7 @@ class Application_Model_DbTable_Transactions extends Zend_Db_Table_Abstract
 	public function checkIsFeatured($account_id)
 	{
 		$select = $this->select()
-					->from($this,array('id'))
+					->from($this,array('id','paypal_subscription_id'))
 					->where('account_id = ?',$account_id)
 					->where('payment_status = ?','Y');
 					
@@ -34,6 +34,24 @@ class Application_Model_DbTable_Transactions extends Zend_Db_Table_Abstract
 						
 						);
 			return $this->update($data, $where);
+	}
+	public function getFeaturedFreelancerDetails($account_id)
+	{
+		$select = $this->select()
+					->from($this,array('*'))
+					->where('account_id = ?',$account_id)
+					->where('payment_status = ?','Y');
+					
+		$row = $this->fetchRow($select);
+		if($row!=NULL)
+		{
+			$row = $row->toArray();
+		}
+		else
+		{
+			$row = array();
+		}
+		return $row;
 	}
     
 }

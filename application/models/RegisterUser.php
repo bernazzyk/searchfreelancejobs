@@ -34,7 +34,7 @@ class Application_Model_RegisterUser extends Zend_Form
         
         $f_submit = new Zend_Form_Element_Submit('submit');
         $f_submit->setAttrib("class","button-green")
-            ->setAttrib("value","Registrate")->setLabel('Step 2 »');
+            ->setAttrib("value","Registrate")->setLabel('Start Bidding »');
         
          $this->addElements(array($f_email, $f_password,$f_password_confirm, $f_submit));
     }

@@ -66,7 +66,7 @@ class PaymentController extends Zend_Controller_Action
         if (null === $account) {
             throw new Zend_Controller_Action_Exception('Wrong parameters');
         }
-        
+        $result = false;
         if ($this->_getParam('confirm')) {
             switch ($account->paytype) {
                 case 'paypal':
@@ -176,13 +176,20 @@ class PaymentController extends Zend_Controller_Action
     }
 	public function successupgradeAction()
 	{
-	
 		$auth = Zend_Auth::getInstance();
         $authStorage = $auth->getStorage();
         $userId = (int)$authStorage->read();
         if (!$userId) {
             throw new Zend_Controller_Action_Exception('not logged in');
         }
+		$request = $this->getRequest();
+		$tid = $request->getParam('item_number');
+		$transactionModel = new Application_Model_DbTable_Transactions();
+		$transaction = $transactionModel->find($tid)->current();
+		//$transaction->expiry_date = date('Y-m-d H:i:s');
+		$transaction->payment_status = 'Y';
+		$transaction->save();
+		$this->_redirect('/payment/success');
 		/*
 		$request = $this->getRequest();
 		$item_no            =$request->getParam('item_number');
@@ -193,7 +200,7 @@ class PaymentController extends Zend_Controller_Action
 		$currency='USD';
 		//Rechecking the product price and currency details
 		if($item_price==$price && $item_currency==$currency)
-		{ */
+		{ 
 			$payment = new Application_Model_Payment();
 			$transactionModel = new Application_Model_DbTable_Transactions();
 			$transaction = $transactionModel->createRow();
@@ -205,6 +212,8 @@ class PaymentController extends Zend_Controller_Action
 			$transaction->expiry_date = date('Y-m-d H:i:s', strtotime("+30 days"));
 			$transaction->save();
 			$this->_redirect('/payment/success');
+			
+			*/
 		
 	}
     
@@ -233,7 +242,7 @@ class PaymentController extends Zend_Controller_Action
                     }
                     break;
                 case 'subscr_payment':
-                    if ($subscriptionId = (int)$request->getPost('subscr_id')) {
+                    if ($subscriptionId = trim($request->getPost('subscr_id'))) {
                         $account = $accountModel->fetchRow(array('paypal_subscription_id = ?' => $subscriptionId));
                         if (null !== $account) {
                             $account->paid_date = date('Y-m-d H:i:s');
@@ -242,7 +251,7 @@ class PaymentController extends Zend_Controller_Action
                     }
                     break;
                 case 'subscr_cancel':
-                    if ($subscriptionId = (int)$request->getPost('subscr_id')) {
+                    if ($subscriptionId = trim($request->getPost('subscr_id'))) {
                         $account = $accountModel->fetchRow(array('paypal_subscription_id = ?' => $subscriptionId));
                         if (null !== $account) {
                             $account->suspend();
@@ -256,19 +265,132 @@ class PaymentController extends Zend_Controller_Action
         file_put_contents(APPLICATION_PATH . '/../logs/paypal.log', $data, FILE_APPEND);
         die('result');
     }
-	/*
-    public function testAction()
-	{
+	 public function test1Action()
+    {
+	//use in sand box
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $transactionModel = new Application_Model_DbTable_Transactions();
 		$payment = new Application_Model_Payment();
-			$transactionModel = new Application_Model_DbTable_Transactions();
-			$transaction = $transactionModel->createRow();
-			$transaction->account_id = 1;
-			$transaction->amount = 100;
-			$transaction->added = new Zend_Db_Expr('NOW()');
-			$transaction->paytype = 'paypal';
-			$transaction->payment_status = 'N';
-			$transaction->expiry_date = date('Y-m-d H:i:s', strtotime("+30 days"));
-			$transaction->save();
-	}
-	*/
+        $request = $this->getRequest();
+       // if ($payment->validatePayPalUpgrade()) {
+            switch ($request->getPost('txn_type')) {
+                case 'subscr_signup':
+                    if (($id = (int)$request->getPost('item_number'))
+                        && ($subscriptionId = trim($request->getPost('subscr_id')))
+                    ) {
+                        $transaction = $transactionModel->find($id)->current();
+                        $transaction->paypal_subscription_id = $subscriptionId;
+						$transaction->paypal_email = trim($request->getPost('payer_email'));
+						$transaction->expiry_date = date('Y-m-d H:i:s', strtotime("+1 days"));
+						$transaction->payment_status = 'Y';
+                        $transaction->save();
+                    }
+                    break;
+                case 'subscr_payment':
+                    if ($subscriptionId = trim($request->getPost('subscr_id'))) {
+                        $transaction = $transactionModel->fetchRow(array('paypal_subscription_id = ?' => $subscriptionId));
+                        if (null !== $transaction) {
+							$transaction->expiry_date = date('Y-m-d H:i:s', strtotime("+1 days"));
+							$transaction->payment_status = 'Y';
+                            $transaction->save();
+                        }
+                    }
+                    break;
+                case 'subscr_cancel':
+                       if ($subscriptionId = trim($request->getPost('subscr_id'))) {
+                        $transaction = $transactionModel->fetchRow(array('paypal_subscription_id = ?' => $subscriptionId));
+                        if (null !== $transaction) {
+                            $transaction->cancel_date= date('Y-m-d H:i:s');
+							//$transaction->payment_status= 'N';
+                            if($transaction->save()) {
+							// send cancel mail to user
+							$generalTable  = new Application_Model_General();
+							$userRow = $generalTable->getUserById($transaction['account_id']);
+							$config = array('auth' => 'login','username' => 'support@searchfreelancejobs.com','password' => '123qwe');
+							$transport = new Zend_Mail_Transport_Smtp('mail.searchfreelancejobs.com', $config);	 								
+							$mail = new Zend_Mail();
+							$mail->setFrom('no-reply@SearchFreelanceJobs.com', 'SearchFreelanceJobs.com');
+							$mail->setSubject('You have canceled your profile from featured members.');
+					$mail->setBodyText("You have canceled your profile from featured members.\n\n\nWith love,\nThe SearchFreelanceJobs.com Team");
+							$mail->addTo($userRow['email']);						
+							$mail->send($transport);
+							//end
+							}
+							
+							
+                        }
+                    }
+                    break;
+            }
+        //}
+        
+        $data = print_r($_GET, true) . "\n" . print_r($_POST, true);
+        file_put_contents(APPLICATION_PATH . '/../logs/paypal.log', $data, FILE_APPEND);
+        die('result');
+    }
+	 public function upgraderesultAction()
+    {
+	//use on live mode
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+        $transactionModel = new Application_Model_DbTable_Transactions();
+		$payment = new Application_Model_Payment();
+        $request = $this->getRequest();
+       // if ($payment->validatePayPalUpgrade()) {
+            switch ($request->getPost('txn_type')) {
+                case 'subscr_signup':
+                    if (($id = (int)$request->getPost('item_number'))
+                        && ($subscriptionId = trim($request->getPost('subscr_id')))
+                    ) {
+                        $transaction = $transactionModel->find($id)->current();
+                        $transaction->paypal_subscription_id = $subscriptionId;
+						$transaction->paypal_email = trim($request->getPost('payer_email'));
+						$transaction->expiry_date = date('Y-m-d H:i:s', strtotime("+30 days"));
+						$transaction->payment_status = 'Y';
+                        $transaction->save();
+                    }
+                    break;
+                case 'subscr_payment':
+                    if ($subscriptionId = trim($request->getPost('subscr_id'))) {
+                        $transaction = $transactionModel->fetchRow(array('paypal_subscription_id = ?' => $subscriptionId));
+                        if (null !== $transaction) {
+							$transaction->expiry_date = date('Y-m-d H:i:s', strtotime("+30 days"));
+							$transaction->payment_status = 'Y';
+                            $transaction->save();
+                        }
+                    }
+                    break;
+                case 'subscr_cancel':
+                       if ($subscriptionId = trim($request->getPost('subscr_id'))) {
+                        $transaction = $transactionModel->fetchRow(array('paypal_subscription_id = ?' => $subscriptionId));
+                        if (null !== $transaction) {
+                            $transaction->cancel_date= date('Y-m-d H:i:s');
+							//$transaction->payment_status= 'N';
+                              if($transaction->save()) {
+							// send cancel mail to user
+							$generalTable  = new Application_Model_General();
+							$userRow = $generalTable->getUserById($transaction['account_id']);
+							$config = array('auth' => 'login','username' => 'support@searchfreelancejobs.com','password' => '123qwe');
+							$transport = new Zend_Mail_Transport_Smtp('mail.searchfreelancejobs.com', $config);	 								
+							$mail = new Zend_Mail();
+							$mail->setFrom('no-reply@SearchFreelanceJobs.com', 'SearchFreelanceJobs.com');
+							$mail->setSubject('You have canceled your profile from featured members.');
+					$mail->setBodyText("You have canceled your profile from featured members.\n\n\nWith love,\nThe SearchFreelanceJobs.com Team");
+							$mail->addTo($userRow['email']);						
+							$mail->send($transport);
+							//end
+							}
+							
+                        }
+                    }
+                    break;
+            }
+        //}
+        
+        $data = print_r($_GET, true) . "\n" . print_r($_POST, true);
+        file_put_contents(APPLICATION_PATH . '/../logs/paypal.log', $data, FILE_APPEND);
+        die('result');
+    }
+	
 }

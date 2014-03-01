@@ -1269,7 +1269,9 @@ END;
         $currencies = array(1=>'$', 2=>'€', 3=>'£');
         $lastProject = $projectModel->getLast(Application_Model_DbTable_Platforms::BEHANCE_ID);
         $lastProjectDate = null === $lastProject ? null : strtotime($lastProject->posted);
+		
         $rss = Zend_Feed_Reader::import('http://www.behance.net/feeds/projects');
+		//$rss = Zend_Feed_Reader::import('http://feeds.feedburner.com/BehanceNetworkJoblist');
 		foreach($rss as $entry) {
 		$project = $this->ProjectListFields;
 		$project['title'] = $entry->getTitle();

@@ -229,19 +229,11 @@ class Application_Model_DbTable_Projects extends Zend_Db_Table_Abstract
 	}
 	public function getLatestProjectFromEachPlatforms()
     {
-		$select = $this->select()->setIntegrityCheck(false)
-				->from($this,array(new Zend_Db_Expr('max(id) as maxId')))
-				->group('platform_id')
-				->order('posted DESC');		
-		$row = $this->fetchAll($select);
-		if($row!=NULL)
-		{
-			$row = $row->toArray();
-		}
-		else
-		{
-			$row = NULL;
-		}	
-		return $row;
+	
+		$this->db = Zend_Registry::get( 'db' );
+		$select = 'SELECT `id`,`platform_id` FROM (SELECT `id`,`platform_id` FROM projects ORDER BY `posted` DESC) AS  t GROUP BY platform_id';
+		$project = $this->db->fetchAll($select);
+		return $project;
+		
 	}
 }

@@ -96,8 +96,10 @@ function deletePhoto(pid)
 	?>
 
 	<a href="/payment/sub-cancel" style="float: left; font-size: 12px; color: red; position: relative; left: 50px;top:21px;">Cancel membership</a>
-    <?php if($this->isFeaturedUser) { ?>
-    &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.paypal.com" target="_blank" style="margin-left: 20px;float: left; font-size: 12px; color: red; position: relative; left: 50px;top:21px;">Cancel Freelancer profile</a>
+    <?php if(!empty($this->featuredFreelancerDetails) && $this->featuredFreelancerDetails['cancel_date']==NULL ) { 
+	
+	?>
+    &nbsp;&nbsp;&nbsp;&nbsp;<a href="/profile/cancelfreelancerprofile"  style="margin-left: 20px;float: left; font-size: 12px; color: red; position: relative; left: 50px;top:21px;">Cancel Freelancer profile</a>
     <?php } ?>
 
 	</div>

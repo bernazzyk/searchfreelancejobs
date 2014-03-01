@@ -50,10 +50,14 @@ class IndexController extends Zend_Controller_Action
         $model = new Application_Model_Index();
         $modelFromGeneral = new Application_Model_General(); 
 		$projectsTable = new Application_Model_DbTable_Projects();
+		$projectIdArray = array();
+		$projectFromEachPlatforms = array();
 		$projectFromEachPlatforms =  $projectsTable->getLatestProjectFromEachPlatforms();
+		if(!empty($projectFromEachPlatforms)) {
 		foreach($projectFromEachPlatforms as $projectId)
 		{
-			$projectIdArray[] = $projectId['maxId'];
+			$projectIdArray[] = $projectId['id'];
+		}
 		}
         $auth = Zend_Auth::getInstance();
         $authStorage = $auth->getStorage();

@@ -72,14 +72,10 @@ class Application_Model_Profile extends Application_Model_Freelancer
 		return $this->db->fetchRow($sql_stmt);
 	}
 
-	
-
 	public function getAcountInfo($account_id)
-
 	{
 
-		$sql_stmt = "SELECT fname,lname,company,state,post_code,street,phone FROM accounts WHERE id = {$account_id} LIMIT 1";
-
+		$sql_stmt = "SELECT fname,lname,company,state,post_code,street,phone,paid_date,paytype,subscription_id,paypal_subscription_id,suspended_at FROM accounts WHERE id = {$account_id} LIMIT 1";
 		return $this->db->fetchRow($sql_stmt);
 
 	}

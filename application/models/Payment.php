@@ -16,7 +16,7 @@ define("PAYPAL_API_SIGNATURE", 'AFcWxV21C7fd0v3bYYYRCpSSRl31ADVmIOUaQlc3BHq9rRHS
 
 define('SUBSCRIPTION_COST', 19.95);
 
-define('UPGRADE_COST', 10.00); //for testing otherwise 10$
+define('UPGRADE_COST', 10.00); 
 
 define('IS_SANDBOX', 0);
 
@@ -42,7 +42,7 @@ class Application_Model_Payment
         $sale->card_code = $cc['ccv'];
         $sale->first_name = $account->fname;
         $sale->last_name = $account->lname;
-        $sale->description = 'Freelancer.fm check card';
+        $sale->description = 'SearchFreelanceJobs check card';
         $sale->zip = $account->post_code;
         $sale->city = $account->city;
         $sale->state = $account->state;
@@ -56,7 +56,7 @@ class Application_Model_Payment
         $sale->void($response->transaction_id);
         
         $subscription = new AuthorizeNet_Subscription();
-        $subscription->name = 'Freelancer.fm subscription';
+        $subscription->name = 'SearchFreelanceJobs subscription';
         $subscription->intervalLength = "1";
         $subscription->intervalUnit = "months";
         $subscription->totalOccurrences = 9999;
@@ -134,14 +134,13 @@ class Application_Model_Payment
         parse_str($response, $parsedResponse);
         return isset($parsedResponse['ACK']) && 'Success' == $parsedResponse['ACK'];
     }
-	  public function getPayPalFormForUpgrade()
+	
+	 public function getPayPalFormForUpgradeSandBox(Application_Model_DbTable_Transaction $transaction)
     {
-        $paypalEmail = PAYPAL_EMAIL;
-		//$paypalEmail = "arvindjobs2014-facilitator@gmail.com";
+      	$paypalEmail = PAYPAL_EMAIL;
+		//$paypalEmail = "arvindkumar@gmail.com"; // pass = arvindkumar
         $payPalUrl = self::PAYPAL_URL;
-		$UPGRADE_COST = UPGRADE_COST;
 		//$payPalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
-		//$UPGRADE_COST = 1;
         return <<<HTML
 Please wait, you will be redirected to the paypal website.<br />
 If you are not automatically redirected to paypal within 5 seconds...
@@ -149,11 +148,44 @@ If you are not automatically redirected to paypal within 5 seconds...
     <input type="hidden" name="cmd" value="_xclick-subscriptions">
     <input type="hidden" name="business" value="{$paypalEmail}">
     <input type="hidden" name="return" value="http://{$_SERVER['SERVER_NAME']}/payment/successupgrade">
+	<input type="hidden" name="rm" value="2">
     <input type="hidden" name="cancel_return" value="http://{$_SERVER['SERVER_NAME']}/payment/cancel">
-    <input type="hidden" name="notify_url" value="http://{$_SERVER['SERVER_NAME']}/payment/result-paypal">
-    <input type="hidden" name="item_name" value="Freelancer.fm subscription">
-	<input type="hidden" name="item_number" value="1">
-    <input type="hidden" name="a3" value="{$UPGRADE_COST}">
+    <input type="hidden" name="notify_url" value="http://{$_SERVER['SERVER_NAME']}/payment/test1">
+    <input type="hidden" name="item_name" value="SearchFreelanceJobs subscription">
+	<input type="hidden" name="item_number" value="{$transaction->id}">
+    <input type="hidden" name="a3" value="{$transaction->amount}">
+    <input type="hidden" name="p3" value="1">
+    <input type="hidden" name="t3" value="D">
+    <input type="hidden" name="src" value="1">
+    <input type="hidden" name="no_note" value="1">
+    <input type="hidden" name="no_shipping" value="1">
+    <input type="hidden" name="currency_code" value="USD">
+    <input type="submit" style="display: none;">
+</form>
+<br>
+<script>$(document).ready(function() { document.dps_paypal_form.submit(); }); </script>
+HTML;
+    }
+	
+	 public function getPayPalFormForUpgrade(Application_Model_DbTable_Transaction $transaction)
+    {
+      	$paypalEmail = PAYPAL_EMAIL;
+		//$paypalEmail = "arvindkumar@gmail.com"; // pass = arvindkumar
+        $payPalUrl = self::PAYPAL_URL;
+		//$payPalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+        return <<<HTML
+Please wait, you will be redirected to the paypal website.<br />
+If you are not automatically redirected to paypal within 5 seconds...
+<form method="post" name="dps_paypal_form" action="{$payPalUrl}">
+    <input type="hidden" name="cmd" value="_xclick-subscriptions">
+    <input type="hidden" name="business" value="{$paypalEmail}">
+    <input type="hidden" name="return" value="http://{$_SERVER['SERVER_NAME']}/payment/successupgrade">
+	<input type="hidden" name="rm" value="2">
+    <input type="hidden" name="cancel_return" value="http://{$_SERVER['SERVER_NAME']}/payment/cancel">
+    <input type="hidden" name="notify_url" value="http://{$_SERVER['SERVER_NAME']}/payment/upgraderesult">
+    <input type="hidden" name="item_name" value="SearchFreelanceJobs subscription">
+	<input type="hidden" name="item_number" value="{$transaction->id}">
+    <input type="hidden" name="a3" value="{$transaction->amount}">
     <input type="hidden" name="p3" value="1">
     <input type="hidden" name="t3" value="M">
     <input type="hidden" name="src" value="1">
@@ -180,7 +212,7 @@ If you are not automatically redirected to paypal within 5 seconds...
     <input type="hidden" name="return" value="http://{$_SERVER['SERVER_NAME']}/payment/success">
     <input type="hidden" name="cancel_return" value="http://{$_SERVER['SERVER_NAME']}/payment/cancel">
     <input type="hidden" name="notify_url" value="http://{$_SERVER['SERVER_NAME']}/payment/result-paypal">
-    <input type="hidden" name="item_name" value="Freelancer.fm subscription">
+    <input type="hidden" name="item_name" value="SearchFreelanceJobs subscription">
     <input type="hidden" name="item_number" value="{$transaction->id}">
     <input type="hidden" name="a1" value="0">
     <input type="hidden" name="p1" value="1">
@@ -247,6 +279,51 @@ HTML;
         }
     }
     
-    
-    
+    public function validatePayPalUpgrade()
+    {
+        $url_parsed=parse_url(self::PAYPAL_URL);
+        
+        if (empty($_POST['txn_type'])) {
+            return false;
+        }
+        
+        if ($_POST['txn_type'] == 'subscr_payment' && UPGRADE_COST != $_POST['payment_gross']) {
+            return false;
+        }
+        
+        $post_string = '';
+        foreach ($_POST as $field=>$value) {
+            $this->pp_data["$field"] = $value;
+            $post_string .= $field.'='.urlencode(stripslashes($value)).'&';
+        }
+        $post_string.="cmd=_notify-validate";
+        // open the connection to paypal
+        $fp = fsockopen($url_parsed["host"],"80",$err_num,$err_str,30);
+        if(!$fp) {
+            return false;
+        } else {
+            // Post the data back to paypal
+            fputs($fp, "POST ".$url_parsed["path"]." HTTP/1.1\r\n");
+            fputs($fp, "Host: ".$url_parsed["host"]."\r\n");
+            fputs($fp, "Content-type: application/x-www-form-urlencoded\r\n");
+            fputs($fp, "Content-length: ".strlen($post_string)."\r\n");
+            fputs($fp, "Connection: close\r\n\r\n");
+            fputs($fp, $post_string . "\r\n\r\n");
+            // loop through the response from the server and append to variable
+            while(!feof($fp)) {
+                $this->response .= fgets($fp, 1024);
+            }
+            fclose($fp); // close connection
+        }
+        
+        //add checking to sandbox.paypal.com
+        //2012-12-16
+        if (eregi("VERIFIED",$this->response) || $url_parsed["host"] == 'www.paypal.com') {
+            // Valid IPN transaction.
+            return true;
+        } else {
+            // Invalid IPN transaction.
+            return false;
+        }
+    }
 }
