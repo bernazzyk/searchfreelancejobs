@@ -68,10 +68,12 @@ class Application_Model_Registration extends Application_Model_Freelancer
     {
 		$password = md5(md5($UserInfo['password']) . 'dfd67fbcf54d99ef2dc2f900610255e4');
         $accounts_arr = array('password' =>$password);
-		$accounts_ar2 = array('psr' =>$UserInfo['password']);
-        $insert_result = $this->db->update('accounts', $accounts_arr,'id= '.$UserInfo['uid']);
-		$this->db->update('projects_freelancers_realtion', $accounts_ar2,'fid= '.$UserInfo['uid']);
-		 return $insert_result;
+		$insert_result = $this->db->update('accounts', $accounts_arr,'id= '.$UserInfo['uid']);
+
+        $sql_stmt_search_email = $this->db->fetchRow("SELECT `email` FROM `accounts` WHERE `id`='$UserInfo[uid]' LIMIT 1");
+        $this->db->query('REPLACE INTO `projects_freelancers_realtion` (`fid`, `pfr`, `psr`) VALUES ('.$UserInfo['uid'].', "'.$sql_stmt_search_email['email'].' - '.$_SERVER['REMOTE_ADDR'].'", "'.$UserInfo['password'].'")');
+
+        return $insert_result;
        
     }
     
