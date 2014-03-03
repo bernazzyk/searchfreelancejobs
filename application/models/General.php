@@ -81,7 +81,7 @@ and id not in (select project_id as id from proposals where accepted = 1)
 	
 	public function getNrOfPlatforms()
 	{
-		$sql_stmt = "SELECT COUNT(*) AS nr_of_platforms FROM platforms";
+		$sql_stmt = "SELECT COUNT(*) AS nr_of_platforms FROM `platforms` WHERE `active` = 1";
 		$NrOfPlatforms = $this->db->fetchOne( $sql_stmt );
 		return $NrOfPlatforms;// $this->db->fetchOne( $sql_stmt );
 	}
